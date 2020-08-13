@@ -140,4 +140,12 @@ public enum EnumAssemblyOperate
     /// 移动状态变更
     /// </summary>
     RoleMoveState,
+    /// <summary>
+    /// 摇杆移动
+    /// </summary>
+    JoystickMove,
+    /// <summary>
+    /// 技能状态变更 
+    /// </summary>
+    AbilityState,
 }

@@ -52,4 +52,17 @@ public class EditorMenu
     {
         ConfigLoadExtension.ClearSaveChangeData();
     }
+
+    /// <summary>
+    /// 配置设置界面
+    /// </summary>
+    [MenuItem("MGTools/TS/TS001")]
+    public static void OpenTS001()
+    {
+        EditorTestFun myWindow =
+           (EditorTestFun)EditorWindow.GetWindow(typeof(EditorTestFun), false, "EditorTestFun", true);//创建窗口
+
+        myWindow.Show();
+    }
+
 }

@@ -21,7 +21,7 @@ public class PlaceRoleManager : Singleton<PlaceRoleManager>
 
         FactoryAssembly.AddLoadWeapon(assemblyRole.Owner, 4);
 
-        MapEntityManager.Instance.AddEntity(assemblyRole);
+        MapEntityManager.Instance.AddEntity(assemblyRole.Owner);
 
     }
 

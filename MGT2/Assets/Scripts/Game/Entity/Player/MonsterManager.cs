@@ -65,10 +65,7 @@ public class MonsterManager : Singleton<MonsterManager>, IUpdate
 
         //FactoryEntity.InitialGoap(assemblyRole);
 
-        AssyEntityManager.Instance.Addition(entityId, entity);
-
-
-        MapEntityManager.Instance.AddEntity(assemblyRole);
+        MapEntityManager.Instance.AddEntity(assemblyRole.Owner);
 
         _listAllMonsters.Add(entityId);
 

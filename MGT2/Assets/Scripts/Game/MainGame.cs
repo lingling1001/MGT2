@@ -15,9 +15,12 @@ public class MainGame : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         GameStateManager.Instance.OnInit();
+
+
     }
     private void Update()
     {
+
         RegisterInterfaceManager.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 

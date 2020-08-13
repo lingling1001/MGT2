@@ -19,6 +19,11 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     public long CurFrameCount { get { return _curFrameCount; } }
 
     private long _tempTime;
+    /// <summary>
+    /// 循环执行
+    /// </summary>
+    /// <param name="taskId">任务ID</param>
+    /// <param name="intervalMs">间隔毫秒</param>
     public TaskAsyncThreadFrame(int taskId, int intervalMs)
     {
         TaskId = taskId;

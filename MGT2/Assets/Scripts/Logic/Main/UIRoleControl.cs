@@ -11,27 +11,18 @@ public partial class UIRoleControl : BaseUI
     {
         base.OnInit();
         GetBindComponents(this.ObjUI);
-
         _joystick = this.Find<ETCJoystick>("Joystick");
-        _joystick.onMove.AddListener(EventJoystickMove);
-        _joystick.onMoveEnd.AddListener(EventJoystickMoveEnd);
         for (int cnt = 0; cnt < _skillParent.Length; cnt++)
         {
             _skillParent[cnt] = this.Find<Transform>("Trans_Skill/Node" + cnt);
         }
 
         RefreshRoleSkills();
-        // _joystick.gameObject.SetActive(false);
+
+        FactoryAssembly.AddJoystick(RoleManager.Instance.CurControlRole.Owner, _joystick);
 
     }
-    private void EventJoystickMove(Vector2 pos)
-    {
-        RoleManager.Instance.MoveDirection(new Vector3(-pos.x, 0, pos.y));
-    }
-    private void EventJoystickMoveEnd()
-    {
-        RoleManager.Instance.MoveEnd();
-    }
+
 
     private void RefreshRoleSkills()
     {
@@ -84,12 +75,8 @@ public partial class UIRoleControl : BaseUI
         return null;
     }
 
-
-
     public override void OnRelease()
     {
-        _joystick.onMove.RemoveListener(EventJoystickMove);
-        _joystick.onMoveEnd.RemoveListener(EventJoystickMoveEnd);
         base.OnRelease();
     }
 }

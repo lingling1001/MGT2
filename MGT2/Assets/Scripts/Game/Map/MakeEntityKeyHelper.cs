@@ -13,7 +13,7 @@ public class MapEntityKeyHelper
         if (_listRelease.Count > 0)
         {
             key = _listRelease[0];
-            _listRelease.Remove(0);
+            _listRelease.RemoveAt(0);
         }
         else
         {

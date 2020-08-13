@@ -14,11 +14,12 @@ public class AEffectGroup
     {
         _listEvents = datas;
     }
-    public void Execute()
+    public void Execute(AssemblyRole target)
     {
         for (int cnt = 0; cnt < _listEvents.Count; cnt++)
         {
             _listEvents[cnt].SetIsFinish(false);
+            _listEvents[cnt].SetTarget(target);
         }
         SetState(EnumAbilityState.Start);
         SetIndex(0);
@@ -89,5 +90,9 @@ public enum EnumAEffectEvent
     /// 攻击
     /// </summary>
     AttackEffect = 3,
+    /// <summary>
+    /// 朝向目标
+    /// </summary>
+    FaceToTarget = 4,
 
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-
 public class AEDelay : AEffectEventBase
 {
     private DateTime _tempValue = DateTime.MinValue;

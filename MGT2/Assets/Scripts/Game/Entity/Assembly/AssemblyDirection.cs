@@ -21,8 +21,12 @@ public class AssemblyDirection : AssemblyGetViewBase
         {
             return;
         }
+        if (Value == Vector3.zero)
+        {
+            return;
+        }
         assemblyView.Trans.forward = Value;
-
+        Log.Info("  Dir  " + Value);
     }
     public override void OnRelease()
     {

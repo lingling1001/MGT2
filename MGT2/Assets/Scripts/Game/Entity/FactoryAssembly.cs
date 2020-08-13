@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class FactoryAssembly
 {
+
+
+    public static AssemblyJoystick AddJoystick(AssemblyEntityBase owner, ETCJoystick joystick)
+    {
+        AssemblyJoystick data = CreateAssembly<AssemblyJoystick>(EnumAssemblyType.Joystick, owner);
+        AssemblyAdd(data, owner);
+        data.SetValue(joystick);
+        return data;
+    }
     public static AssemblyAbilityCast AddAbilityCast(AssemblyEntityBase owner)
     {
         AssemblyAbilityCast data = CreateAssembly<AssemblyAbilityCast>(EnumAssemblyType.AbilityCast, owner);

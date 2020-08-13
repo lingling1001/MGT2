@@ -39,9 +39,15 @@ public class AttackEffectArrow : AttackEffectBase
         _prefabItem = prefabItem;
         _effectItem = GameObject.Instantiate(_prefabItem);
         Vector3 start = GetWeaponNode().ObjWeapon.transform.position;
-
-        Vector3 end = start + Data.Owner.AssemblyView.Trans.forward * 20;
-
+        Vector3 end;
+        if (Data.Target != null)
+        {
+            end = Data.Target.Position;
+        }
+        else
+        {
+            end = start + Data.Owner.AssemblyView.Trans.forward * 20;
+        }
         end.y = start.y;
         Vector3 control = UnityMath.GetBetweenPoint(start, end, 0.5f);
         control.y = end.y + 3;
@@ -56,18 +62,20 @@ public class AttackEffectArrow : AttackEffectBase
     {
         if (_pathPoint.Length == 0 || _idx >= _pathPoint.Length)
         {
-            AttackEffectManager.Instance.RemoveEffect(this);
+            PlayTweenFinish();
             return;
         }
         Vector3 endPos = _pathPoint[_idx];
         TweenerCore<Vector3, Vector3, VectorOptions> tween = _effectItem.transform.DOMove(endPos, 0.1f);
         tween.onComplete = StartPlayTween;
-        tween.onUpdate = UpdatePosition;
         _idx++;
     }
-
-    private void UpdatePosition()
+    /// <summary>
+    /// 动画播放完成 移除攻击效果
+    /// </summary>
+    private void PlayTweenFinish()
     {
+        AttackEffectManager.Instance.RemoveEffect(this);
 
 
     }

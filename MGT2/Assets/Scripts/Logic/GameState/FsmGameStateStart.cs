@@ -22,6 +22,7 @@ public class FsmGameStateStart : FsmBase
         MonsterManager.Instance.OnInit();
         AstarPath.active.Scan();
         CameraManager.Initial();
+        RoleManager.Instance.OnInit();
 
         RoleManager.Instance.InitRoleToMap();
 
@@ -36,8 +37,11 @@ public class FsmGameStateStart : FsmBase
     {
         UIManager.Instance.CloseUI(EnumUIType.UIPlaceRole);
         UIManager.Instance.CloseUI(EnumUIType.UIMain);
-       
+
         UIManager.Instance.CloseUI(EnumUIType.UIRoleControl);
+
+        RoleManager.Instance.OnRelease();
+        MonsterManager.Instance.OnRelease();
 
         MapEntityManager.Instance.OnRelease();
 

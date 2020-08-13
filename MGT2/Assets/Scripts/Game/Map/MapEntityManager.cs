@@ -54,10 +54,11 @@ public class MapEntityManager : Singleton<MapEntityManager>, IUpdate
         }
         if (MapEntities.ContainsKey(data.EntityId))
         {
+            Log.Error(" MapEntities ContainsKey  "+ data.EntityId);
             return;
         }
         _mapEntities.Add(data.EntityId, data);
-
+        AssyEntityManager.Instance.Addition(data.EntityId, data);
         MessageDispatcher.SendMessage(DefineNotification.MAP_ENTITY_ADD, data);
     }
     /// <summary>

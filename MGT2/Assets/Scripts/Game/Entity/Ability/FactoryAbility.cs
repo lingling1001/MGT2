@@ -62,24 +62,29 @@ public class FactoryAbility
     /// </summary>
     public static AEffectEventBase CreateAEffectEventBase(string[] strs, AssemblyRole owner)
     {
-        if (strs == null || strs.Length != 2)
+        if (strs == null || strs.Length < 1)
         {
             return null;
         }
         AEffectEventBase ae = null;
         EnumAEffectEvent type = (EnumAEffectEvent)int.Parse(strs[0]);
-        string strParem = strs[1];
         switch (type)
         {
             case EnumAEffectEvent.Delay: ae = CreateAEData<AEDelay>(); break;
             case EnumAEffectEvent.Animator: ae = CreateAEData<AEAnimator>(); break;
             case EnumAEffectEvent.AttackEffect: ae = CreateAEData<AEAttackEffect>(); break;
+            case EnumAEffectEvent.FaceToTarget: ae = CreateAEData<AEFaceToTarget>(); break;
             default:
                 Log.Error(" not support type  : " + type + " AbilityId : " + strs[0]);
                 break;
         }
         if (ae != null)
         {
+            string strParem = null;
+            if (strs.Length == 2)
+            {
+                strParem = strs[1];
+            }
             ae.OnInitial(type, owner, strParem);
         }
         return ae;

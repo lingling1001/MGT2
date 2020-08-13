@@ -41,6 +41,7 @@ public class AssemblyAnimator : AssemblyGetViewBase
         {
             _animator.Play(AniValue);
         }
+        Log.Info("  Pay Animator  " + AniValue);
     }
 
     public override void ViewLoadFinish()

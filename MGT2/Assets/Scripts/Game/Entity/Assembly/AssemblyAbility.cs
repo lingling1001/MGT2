@@ -100,7 +100,7 @@ public class AssemblyAbility : AssemblyBase, IUpdate
     /// <summary>
     /// 执行效果
     /// </summary>
-    public void ExecuteEffect()
+    public void ExecuteEffect(AssemblyRole target)
     {
         if (_abilityEffects == null || _abilityEffects.Count == 0)
         {
@@ -108,7 +108,7 @@ public class AssemblyAbility : AssemblyBase, IUpdate
         }
         for (int cnt = 0; cnt < _abilityEffects.Count; cnt++)
         {
-            _abilityEffects[cnt].Execute();
+            _abilityEffects[cnt].Execute(target);
         }
         SetState(EnumAbilityState.Execute);
     }
@@ -130,13 +130,14 @@ public class AssemblyAbility : AssemblyBase, IUpdate
         }
         if (_tempValue)
         {
-            SetState(EnumAbilityState.None);
+            SetState(EnumAbilityState.End);
         }
     }
 
     private void SetState(EnumAbilityState state)
     {
         _state = state;
+        Owner.NotifyObserver(EnumAssemblyOperate.AbilityState, this);
     }
 
     public override void OnRelease()

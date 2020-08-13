@@ -11,6 +11,8 @@ public class PrototypeMap : BasePrototype
     public Vector3 CameraPosition { get; private set; }
     public float CameraFieldView { get; private set; }
     public string DragLimit { get; private set; }
+    public string StarInfo { get; private set; }
+
     protected override void OnLoadData(XmlNode data)
     {
         Path = Utility.Xml.GetAttribute<string>(data, "Path");
@@ -18,6 +20,7 @@ public class PrototypeMap : BasePrototype
         CameraPosition = GetAttribut_vector3(data, "CameraPosition");
         CameraFieldView = Utility.Xml.GetAttribute<float>(data, "CameraFieldView");
         DragLimit = Utility.Xml.GetAttribute<string>(data, "DragLimit");
+        StarInfo = Utility.Xml.GetAttribute<string>(data, "StarInfo");
     }
     private float[] _arrLimit;
     /// <summary>

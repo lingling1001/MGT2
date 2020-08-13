@@ -74,27 +74,6 @@ public class RoleManager : Singleton<RoleManager>
     }
 
 
-    public void MoveDirection(Vector3 vector3)
-    {
-        if (CurControlRole == null)
-        {
-            return;
-        }
-        CurControlRole.AssyDirection.SetValue(vector3);
-        CurControlRole.AssyMoveToDirection.SetMove(true);
-
-    }
-
-    public void MoveEnd()
-    {
-        if (CurControlRole == null)
-        {
-            return;
-        }
-        CurControlRole.AssyMoveToDirection.SetMove(false);
-    }
-
-
 
 
     public void OnRelease()

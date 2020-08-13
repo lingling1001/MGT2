@@ -105,4 +105,8 @@
     /// 技能释放
     /// </summary>
     AbilityCast,
+    /// <summary>
+    /// 摇杆
+    /// </summary>
+    Joystick,
 }

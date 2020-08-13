@@ -30,7 +30,7 @@ public enum EnumFindPathState : byte
     /// </summary>
     Stop,
 }
-public class AssemblyRoleMove : AssemblySelfRole, IUpdate
+public class AssemblyRoleMove : AssemblySelfRole, IUpdate, IObserverAssembly
 {
     private FindPathList _findPathList = new FindPathList();
     public int Priority => DefinePriority.NORMAL;
@@ -53,8 +53,9 @@ public class AssemblyRoleMove : AssemblySelfRole, IUpdate
 
     public override void OnInit(EnumAssemblyType assemblyType, AssemblyEntityBase owner)
     {
-        RegisterInterfaceManager.RegisteUpdate(this);
         base.OnInit(assemblyType, owner);
+        Owner.RegisterObserver(this);
+        RegisterInterfaceManager.RegisteUpdate(this);
     }
     public void SetValue(Vector3 pos, float distance = 2)
     {
@@ -69,12 +70,12 @@ public class AssemblyRoleMove : AssemblySelfRole, IUpdate
         {
             return;
         }
-        if (!SelfEntity.Owner.ContainsKey(EnumAssemblyType.Position))
+        //没有开始寻路 或者 移动结束
+        if (IsOverFindPath())
         {
             return;
         }
-        //没有开始寻路 或者 移动结束
-        if (MoveState == EnumFindPathState.None || MoveState == EnumFindPathState.Finish)
+        if (!SelfEntity.Owner.ContainsKey(EnumAssemblyType.Position))
         {
             return;
         }
@@ -109,13 +110,25 @@ public class AssemblyRoleMove : AssemblySelfRole, IUpdate
         Vector3 targetPos = _findPathList.GetPosition();
         float step = SelfEntity.AssyAttribute.GetValue(DefineAttributeId.SPEED_MOVE) * Time.deltaTime;
         SelfEntity.AssyPosition.SetPosition(Vector3.MoveTowards(SelfEntity.Position, targetPos, step));
-        SelfEntity.AssyDirection.SetValue((targetPos - SelfEntity.Position));
+        SelfEntity.AssyDirection.SetValue((targetPos - SelfEntity.Position).normalized);
         if (Vector3.Distance(SelfEntity.Position, targetPos) < 0.2f)
         {
             _findPathList.SetIdx(_findPathList.Index + 1);
         }
+        SelfEntity.AssyAnimator.SetValue(EnumAnimator.Run);
 
 
+    }
+    private bool IsOverFindPath()
+    {
+        switch (MoveState)
+        {
+            case EnumFindPathState.None:
+            case EnumFindPathState.Finish:
+            case EnumFindPathState.Stop:
+                return true;
+        }
+        return false;
     }
     /// <summary>
     /// 设置当前是否寻路完成。
@@ -132,12 +145,22 @@ public class AssemblyRoleMove : AssemblySelfRole, IUpdate
     {
         _findPathList.Reset();
         SetMoveState(state);
+        Log.Info("  Stop  Move  " + state);
         SelfEntity.AssyAnimator.SetValue(EnumAnimator.Idle);
+
+    }
+    public void UpdateAssembly(EnumAssemblyOperate operate, IAssembly data)
+    {
+        if (operate == EnumAssemblyOperate.JoystickMove)//摇杆操作，停止寻路
+        {
+            SetMoveState(EnumFindPathState.Stop);
+        }
 
     }
     public override void OnRelease()
     {
         RegisterInterfaceManager.UnRegisteUpdate(this);
+        Owner.RemoveObserver(this);
         base.OnRelease();
     }
 
