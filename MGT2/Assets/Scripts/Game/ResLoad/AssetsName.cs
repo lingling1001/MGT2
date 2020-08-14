@@ -9,21 +9,23 @@ public static class AssetsName
 
 
 
-    public const string UI_MIN_MAP = "UI/Map/UIMinMap.prefab";
-    public const string UI_EVENT_MASK = "UI/PreLoad/EventMaskObj.prefab";
+    public const string UI_MIN_MAP = "UI/UIMap/UIMinMap.prefab";
+    public const string UI_EVENT_MASK = "UI/UIPreLoad/EventMaskObj.prefab";
 
     /// <summary>
     /// 选择角色
     /// </summary>
-    public const string UI_SELECT_ROLE = "UI/SelectRole/UISelectRole.prefab";
+    public const string UI_SELECT_ROLE = "UI/UISelectRole/UISelectRole.prefab";
     /// <summary>
     /// 选择角色Item
     /// </summary>
-    public const string UI_SELECT_ROLE_ITEM = "UI/SelectRole/UISelectRoleItem.prefab";
+    public const string UI_SELECT_ROLE_ITEM = "UI/UISelectRole/UISelectRoleItem.prefab";
 
 
-    public const string UI_ROLE_CONTROL = "UI/Main/UIRoleControl.prefab";
+    public const string UI_ROLE_CONTROL = "UI/UIMain/UIRoleControl.prefab";
 
-    public const string UI_ROLE_SKILL_ITEM = "UI/Main/UIRoleSkillItem.prefab";
+    public const string UI_ROLE_SKILL_ITEM = "UI/UIMain/UIRoleSkillItem.prefab";
+
+
 
 }

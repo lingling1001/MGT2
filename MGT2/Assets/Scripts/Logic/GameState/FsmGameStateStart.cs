@@ -20,7 +20,7 @@ public class FsmGameStateStart : FsmBase
         MapEntityManager.Instance.OnInit();
 
         MonsterManager.Instance.OnInit();
-        AstarPath.active.Scan();
+
         CameraManager.Initial();
         RoleManager.Instance.OnInit();
 
@@ -46,6 +46,7 @@ public class FsmGameStateStart : FsmBase
         MapEntityManager.Instance.OnRelease();
 
         MapManager.Instance.OnRelease();
+        FindPathManager.Instance.OnRelease();
 
         MessageDispatcher.RemoveListener(DefineNotification.MAP_LOAD_FINISH, EventMapLoadFinish);
 

@@ -2,8 +2,7 @@
 using MFrameWork;
 using System;
 using UnityEngine;
-
-public class MapManager : Singleton<MapManager>, IUpdate
+public class MapManager : Singleton<MapManager>
 {
     public GameObject ObjTerrain;
     private PrototypeMap _mapData;
@@ -11,12 +10,8 @@ public class MapManager : Singleton<MapManager>, IUpdate
 
     public int Priority => throw new NotImplementedException();
 
-    private AStarThread _astartThread;
     public void OnInit()
     {
-        _astartThread = new AStarThread(1, 1000);
-        TaskAsynManager.Instance.AdditionTask(_astartThread);
-        RegisterInterfaceManager.RegisteUpdate(this);
         UIManager.Instance.OpenUI<UILoading>(EnumUIType.UILoading);
         LoadMap(1);
 
@@ -26,6 +21,7 @@ public class MapManager : Singleton<MapManager>, IUpdate
         PrototypeMap data = PrototypeManager<PrototypeMap>.Instance.GetPrototype(mapId);
         SetMapData(data);
         ResLoadHelper.LoadAssetAsync<GameObject>(data.Path, EventLoadMapFinish);
+
     }
 
     private void EventLoadMapFinish(GameObject obj)
@@ -41,20 +37,14 @@ public class MapManager : Singleton<MapManager>, IUpdate
     private void SetMapData(PrototypeMap data)
     {
         _mapData = data;
+        FindPathManager.Instance.RefreshMapInfo(data);
     }
 
-    public void On_Update(float elapseSeconds, float realElapseSeconds)
-    {
-        if (_astartThread != null)
-        {
-            Log.Info(_astartThread.Ticks + "  " + _astartThread.Frame);
-        }
 
-    }
+
+
     public void OnRelease()
     {
-        TaskAsynManager.Instance.FinishTask(1);
-        RegisterInterfaceManager.UnRegisteUpdate(this);
         CameraManager.Release();
         GameObject.Destroy(ObjTerrain);
     }

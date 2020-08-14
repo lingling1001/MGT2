@@ -13,25 +13,28 @@ public class ASMakeManager : MonoBehaviour
 
     [HideInInspector]
     public bool IsShowGizmos = true;
-    public ASNode[,] Map { get { return _map; } }
 
-    private ASNode[,] _map;
-
+    private ASMap _mapInfo;
     public void RefreshMap()
     {
-        _map = new ASNode[MapSize.x, MapSize.y];
+        ASNode[,] map = new ASNode[MapSize.x, MapSize.y];
         for (int cntY = 0; cntY < MapSize.x; cntY++)
         {
             for (int cntX = 0; cntX < MapSize.y; cntX++)
             {
                 Vector3 pos = GetVector3ByIdx(cntX, cntY);
                 bool canWalk = !Physics.CheckBox(pos, Vector3.one * GetNodeSize() / 2 * 0.95f, Quaternion.identity, ObsLayer);
-                _map[cntX, cntY] = new ASNode(cntX, cntY, canWalk);
+                map[cntX, cntY] = new ASNode(cntX, cntY, canWalk);
             }
         }
-
+        _mapInfo = new ASMap();
+        _mapInfo.InitialMap(map, MapSize.x, MapSize.y);
     }
 
+    public ASNode[,] GetASNodes()
+    {
+        return _mapInfo.GetASNodes();
+    }
     private float GetNodeSize()
     {
         return NodeSize / 10.0f;
@@ -48,14 +51,14 @@ public class ASMakeManager : MonoBehaviour
         {
             return;
         }
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(MapSize.x, 1, MapSize.y));
-        if (_map == null)
+        Gizmos.DrawWireCube(new Vector3(MapSize.x / 2, 0, MapSize.y / 2), new Vector3(MapSize.x, 1, MapSize.y));
+        if (_mapInfo == null)
         {
             return;
         }
         float sc = (GetNodeSize());
         Vector3 scale = new Vector3(sc, sc, sc);
-        foreach (var item in _map)
+        foreach (var item in _mapInfo.GetASNodes())
         {
             if (!item.CanWalk)
             {

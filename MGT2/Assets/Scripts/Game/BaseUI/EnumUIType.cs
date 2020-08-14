@@ -3,27 +3,27 @@ using System.Reflection;
 
 public enum EnumUIType : int
 {
-    [AttributeUIName("UI/Main/UIEnterGame.prefab")]
+    [AttributeUIName("UI/UIMain/UIEnterGame.prefab")]
     UIEnterGame = 100,
-    [AttributeUIName("UI/Main/UIMain.prefab")]
+    [AttributeUIName("UI/UIMain/UIMain.prefab")]
     UIMain = 101,
 
 
 
 
-    [AttributeUIName("UI/PreLoad/UILoading.prefab")]
+    [AttributeUIName("UI/UIPreLoad/UILoading.prefab")]
     UILoading = 103,
 
 
-    [AttributeUIName("UI/PlaceRole/UIPlaceRole.prefab")]
+    [AttributeUIName("UI/UIPlaceRole/UIPlaceRole.prefab")]
     UIPlaceRole = 300,
-    [AttributeUIName("UI/PlaceRole/UIPlaceRoleItem.prefab")]
+    [AttributeUIName("UI/UIPlaceRole/UIPlaceRoleItem.prefab")]
     UIPlaceRoleItem = 301,
 
 
-    [AttributeUIName("UI/Head/UIHead.prefab")]
+    [AttributeUIName("UI/UIHead/UIHead.prefab")]
     UIHead = 400,
-    [AttributeUIName("UI/Head/UIHeadItem.prefab")]
+    [AttributeUIName("UI/UIHead/UIHeadItem.prefab")]
     UIHeadItem = 401,
 
 

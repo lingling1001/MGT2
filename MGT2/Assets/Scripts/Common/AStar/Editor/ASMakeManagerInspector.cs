@@ -33,7 +33,7 @@ public class ASMakeManagerInspector : Editor
         }
         if (GUILayout.Button("GeneraMapFile"))
         {
-            SaveMapInfo(_instance.Map);
+            SaveMapInfo(_instance.GetASNodes());
         }
         _instance.IsShowGizmos = EditorGUILayout.Toggle("Gizmos : ", _instance.IsShowGizmos);
 
@@ -49,20 +49,8 @@ public class ASMakeManagerInspector : Editor
         {
             return;
         }
-        StringBuilder sb = new StringBuilder();
-        List<string> lines = new List<string>();
-
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            sb.Remove(0, sb.Length);
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                sb.Append((array[i, j].CanWalk) ? "1" : "0");
-            }
-            lines.Add(sb.ToString());
-        }
-
-        System.IO.File.WriteAllLines(Application.dataPath + @"\_Res\Config\Astar.txt", lines);
+        string content = ASMapHelper.ConvertMapToTxt(array);
+        System.IO.File.WriteAllText(Application.dataPath + @"\_Res\Config\Astar.txt", content);
         AssetDatabase.Refresh();
 
     }
