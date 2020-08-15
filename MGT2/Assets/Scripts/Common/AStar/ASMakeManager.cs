@@ -18,17 +18,19 @@ public class ASMakeManager : MonoBehaviour
     public void RefreshMap()
     {
         ASNode[,] map = new ASNode[MapSize.x, MapSize.y];
+        float gridSize = GetNodeSize();
+        float gridSizeHalf = gridSize / 2;
         for (int cntY = 0; cntY < MapSize.x; cntY++)
         {
             for (int cntX = 0; cntX < MapSize.y; cntX++)
             {
-                Vector3 pos = GetVector3ByIdx(cntX, cntY);
+                Vector3 pos = GetCenterPoaByXY(cntX, cntY, gridSize, gridSizeHalf);
                 bool canWalk = !Physics.CheckBox(pos, Vector3.one * GetNodeSize() / 2 * 0.95f, Quaternion.identity, ObsLayer);
                 map[cntX, cntY] = new ASNode(cntX, cntY, canWalk);
             }
         }
         _mapInfo = new ASMap();
-        _mapInfo.InitialMap(map, MapSize.x, MapSize.y);
+        _mapInfo.InitialMap(map, MapSize.x, MapSize.y, this.NodeSize);
     }
 
     public ASNode[,] GetASNodes()
@@ -39,25 +41,29 @@ public class ASMakeManager : MonoBehaviour
     {
         return NodeSize / 10.0f;
     }
-    private Vector3 GetVector3ByIdx(int x, int y)
+    public static Vector3 GetCenterPoaByXY(int x, int y, float gridSize, float gridSizeHalf)
     {
-        Vector3 pos = new Vector3(x * GetNodeSize(), 0, y * GetNodeSize());
-
+        Vector3 pos = new Vector3(x * gridSize + gridSizeHalf, 0, y * gridSize + gridSizeHalf);
         return pos;
     }
+
     private void OnDrawGizmos()
     {
         if (!IsShowGizmos)
         {
             return;
         }
-        Gizmos.DrawWireCube(new Vector3(MapSize.x / 2, 0, MapSize.y / 2), new Vector3(MapSize.x, 1, MapSize.y));
+        float gridSize = GetNodeSize();
+        float gridSizeHalf = gridSize / 2;
+
+        Vector3 mapPos = new Vector3(MapSize.x, 1, MapSize.y);
+        Vector3 mapSize = new Vector3(GetNodeSize() * MapSize.x / 2, 0, GetNodeSize() * MapSize.y / 2);
+        Gizmos.DrawWireCube(mapPos, mapSize);
         if (_mapInfo == null)
         {
             return;
         }
-        float sc = (GetNodeSize());
-        Vector3 scale = new Vector3(sc, sc, sc);
+        Vector3 scale = new Vector3(gridSize, 0.01f, gridSize);
         foreach (var item in _mapInfo.GetASNodes())
         {
             if (!item.CanWalk)
@@ -68,8 +74,7 @@ public class ASMakeManager : MonoBehaviour
             {
                 Gizmos.color = Color.white;
             }
-            Vector3 center = GetVector3ByIdx(item.x, item.y);
-
+            Vector3 center = GetCenterPoaByXY(item.x, item.y, gridSize, gridSizeHalf);
             Gizmos.DrawWireCube(center, scale);
         }
 

@@ -11,9 +11,12 @@ public class PrototypeMap : BasePrototype
     public Vector3 CameraPosition { get; private set; }
     public float CameraFieldView { get; private set; }
     public string DragLimit { get; private set; }
+    /// <summary>
+    /// 地图大小
+    /// </summary>
     public string Size { get; private set; }
-
     public string StarInfo { get; private set; }
+    public int GridSize { get; private set; }
 
     protected override void OnLoadData(XmlNode data)
     {
@@ -24,6 +27,8 @@ public class PrototypeMap : BasePrototype
         DragLimit = Utility.Xml.GetAttribute<string>(data, "DragLimit");
         Size = Utility.Xml.GetAttribute<string>(data, "Size");
         StarInfo = Utility.Xml.GetAttribute<string>(data, "StarInfo");
+        GridSize = Utility.Xml.GetAttribute<int>(data, "GridSize");
+
     }
     private float[] _arrLimit;
     /// <summary>
@@ -39,6 +44,9 @@ public class PrototypeMap : BasePrototype
         return _arrLimit;
     }
     private int[] _arrsSize;
+    /// <summary>
+    /// 地图大小
+    /// </summary>
     public int[] GetSize()
     {
         if (_arrsSize == null)

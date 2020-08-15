@@ -26,7 +26,6 @@ public class AssemblyDirection : AssemblyGetViewBase
             return;
         }
         assemblyView.Trans.forward = Value;
-        Log.Info("  Dir  " + Value);
     }
     public override void OnRelease()
     {

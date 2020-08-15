@@ -19,6 +19,10 @@ public class AssemblyMoveToDirection : AssemblySelfRole, IUpdate
             Vector3 targetDir = SelfEntity.Position + SelfEntity.AssyDirection.Value;
             float step = SelfEntity.AssyAttribute.GetValue(DefineAttributeId.SPEED_MOVE) * Time.deltaTime;
             Vector3 targetPos = Vector3.MoveTowards(SelfEntity.Position, targetDir, step);
+            if (!FindPathManager.Instance.IsCanWalk(targetPos))
+            {
+                return;
+            }
             SelfEntity.AssyPosition.SetPosition(targetPos);
         }
     }

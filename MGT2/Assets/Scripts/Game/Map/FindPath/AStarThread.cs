@@ -7,6 +7,8 @@ public class AStarThread : TaskAsyncThreadFrame
     public long Frame;
     public long Ticks;
     private ASMap _mapInfo;
+    public ASMap MapInfo { get { return _mapInfo; } }
+
     private List<ASMapFindPathData> _listTask = new List<ASMapFindPathData>();
 
     public AStarThread(int taskId, int intervalMs) : base(taskId, intervalMs)
@@ -21,14 +23,16 @@ public class AStarThread : TaskAsyncThreadFrame
     {
         return _mapInfo.GetASNodes();
     }
-    public ASMapFindPathData AddFindPath(int[] start, int[] end)
+    public int GetGridSize()
+    {
+        return _mapInfo.GridSize;
+    }
+    public ASMapFindPathData AddFindPath(ASNode start, ASNode end)
     {
         ASMapFindPathData data = FindPathManager.Instance.CreateData(start, end);
         _listTask.Add(data);
         return data;
     }
-
-
     protected override void OnExecute(long frameCount, long ticks)
     {
         Frame = frameCount;

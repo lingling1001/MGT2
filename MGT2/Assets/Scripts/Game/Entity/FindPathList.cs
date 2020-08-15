@@ -1,11 +1,10 @@
-﻿using Pathfinding;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FindPathList
 {
-    private ABPath _abPath;
+    private ASMapFindPathData _pathData;
     private List<Vector3> _listPath;
     private Vector3 _posEnd;
     private Vector3 _posStart;
@@ -15,15 +14,13 @@ public class FindPathList
         _posEnd = end;
         _posStart = start;
         SetIdx(1);
-        NNInfo info = AstarPath.active.GetNearest(end);
-        _abPath = ABPath.Construct(start, info.position);
-        AstarPath.StartPath(_abPath);
+        _pathData = FindPathManager.Instance.FindPathNearest(start, end);
     }
 
 
     private bool IsInit()
     {
-        return _abPath != null;
+        return _pathData != null;
     }
     //public bool IsDone()
     //{
@@ -41,16 +38,9 @@ public class FindPathList
         {
             return false;
         }
-        if (_listPath == null && _abPath.IsDone())
+        if (_listPath == null && _pathData.IsDone())
         {
-            if (useSmooth)
-            {
-                _listPath = SimpleSmoothModifierEx.SmoothSimple(_abPath.vectorPath);
-            }
-            else
-            {
-                _listPath = _abPath.vectorPath;
-            }
+            _listPath = FindPathManager.Instance.ConverNodeToVectors(_pathData.ListNode);
             isFirst = true;
         }
         return _listPath != null;
@@ -86,7 +76,7 @@ public class FindPathList
     }
     public void Reset()
     {
-        _abPath = null;
+        _pathData = null;
         _listPath = null;
     }
 }
