@@ -6,14 +6,15 @@ using System;
 
 public class TestInspector : EditorWindow
 {
-
+    public int Type;
     void OnGUI()
     {
+        Type = EditorGUILayout.IntField(Type);
         if (GUILayout.Button("1111111"))
         {
-            EditorBuilder.BuildePackageEx();
+            Debug.Log(CreateRoleHelper.GetRandomName((EnumGender)Type));
         }
-        
+
     }
 
 }

@@ -23,7 +23,9 @@ namespace MFrameWork
             /// : 冒号分割
             /// </summary>
             public static char[] SplitColon = new char[] { ':' };
+            public static char[] SplitAsterisk = new char[] { '*' };
 
+            
             public static bool AttributeValid(System.Xml.XmlNode node, string attributeName)
             {
                 if (node == null || attributeName == null || attributeName.Length <= 0)

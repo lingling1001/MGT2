@@ -18,6 +18,7 @@ public class UIItemNormalScr : MonoBehaviour
     {
         UILabel,
         UITexture,
+        RawImage,
         Max,
     }
     public enum EItemInfoType : byte
@@ -60,7 +61,7 @@ public class UIItemNormalScr : MonoBehaviour
         }
     }
 
-    
+
 
     public void Reset()
     {
@@ -133,6 +134,10 @@ public class UIItemNormalScr : MonoBehaviour
             case EItemMemberType.UITexture:
                 Image uiTexture = mono as Image;
                 //AllianceBossHelper.SetTextureIcon(uiTexture, info);
+                break;
+            case EItemMemberType.RawImage:
+                RawImage image = mono as RawImage;
+                UIHelper.SetRawImage(image, info);
                 break;
             default:
                 break;

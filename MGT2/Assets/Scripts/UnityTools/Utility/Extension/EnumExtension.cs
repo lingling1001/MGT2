@@ -22,6 +22,9 @@ public static class EnumExtension
         }
         return name;
     }
+
+   
+
 }
 
 public class AttributeUIName : Attribute

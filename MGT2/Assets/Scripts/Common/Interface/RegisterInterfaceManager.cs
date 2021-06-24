@@ -46,7 +46,7 @@
                 IUpdate single = listUpdate[i];
                 if (single != null)
                 {
-                    UnityEngine.Profiling.Profiler.BeginSample(single.GetType() + "update");
+                    //UnityEngine.Profiling.Profiler.BeginSample(single.GetHashCode()+ "update");
                     //long time = TimeManager.GetLocalTime();
                     single.On_Update(elapseSeconds, realElapseSeconds);
                     //long time2 = TimeManager.GetLocalTime();
@@ -54,7 +54,7 @@
                     //{
                     //    UnityEngine.Debug.LogErrorFormat("{0} {1}", single.GetType().ToString(), time2 - time);
                     //}
-                    UnityEngine.Profiling.Profiler.EndSample();
+                    //UnityEngine.Profiling.Profiler.EndSample();
                 }
             }
         }

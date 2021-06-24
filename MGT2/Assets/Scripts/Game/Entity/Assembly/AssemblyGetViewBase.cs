@@ -1,12 +1,14 @@
-﻿public abstract class AssemblyGetViewBase : AssemblyBase, IObserverAssembly
+﻿using UnityEngine;
+
+public abstract class AssemblyGetViewBase : AssemblyBase, IObserverAssembly
 {
     protected AssemblyView assemblyView;
 
-    public override void OnInit(EnumAssemblyType assemblyType, AssemblyEntityBase owner)
+    protected override void OnInit(EntityAssembly owner)
     {
-        base.OnInit(assemblyType, owner);
+        base.OnInit(owner);
         Owner.RegisterObserver(this);
-        if (owner.ContainsKey(EnumAssemblyType.View))
+        if (owner.ContainsKey<AssemblyView>())
         {
             if (!GetView().ObjEntityIsNull())
             {
@@ -19,7 +21,7 @@
     {
         if (assemblyView == null)
         {
-            assemblyView = Owner.GetData<AssemblyView>(EnumAssemblyType.View);
+            assemblyView = Owner.GetData<AssemblyView>();
         }
         return assemblyView;
     }
@@ -31,7 +33,7 @@
         }
         return false;
     }
-    public override void OnRelease()
+    protected override void OnRelease()
     {
         Owner.RemoveObserver(this);
         base.OnRelease();
@@ -39,7 +41,7 @@
 
     public virtual void UpdateAssembly(EnumAssemblyOperate operate, IAssembly data)
     {
-        if (data.AssemblyType != EnumAssemblyType.View)
+        if (!(data is AssemblyView))
         {
             return;
         }
@@ -53,6 +55,20 @@
         }
     }
 
-    public abstract void ViewLoadFinish();
+    public virtual void ViewLoadFinish()
+    {
+        if (ViewObjIsNull())
+        {
+            return;
+        }
+        Transform transParent = TransparentNode.GetTransParent(EnumTransParent.Entities);
+        if (transParent != null)
+        {
+            GetView().Trans.SetParent(transParent);
+        }
+        LinkMonoView link = GetView().ObjEntity.AddMissingComponent<LinkMonoView>();
+        link.Link(this.Owner);
+
+    }
 
 }

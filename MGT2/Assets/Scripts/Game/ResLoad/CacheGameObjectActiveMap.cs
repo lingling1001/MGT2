@@ -16,7 +16,7 @@ public class CacheGameObjectActiveMap
         GameObject obj = GetObject(path);
         if (!isActive)
         {
-            UnityObjectExtension.SetActive(obj, false);
+            NGUITools.SetActive(obj, false);
             return false;
         }
         if (obj == null && !_mapObjects.ContainsKey(path))
@@ -28,10 +28,10 @@ public class CacheGameObjectActiveMap
             }
             obj = NGUITools.AddChild(objParent, prefab);
             Add(path, obj);
-            UnityObjectExtension.SetActive(obj, true);
+            NGUITools.SetActive(obj, true);
             return true;
         }
-        UnityObjectExtension.SetActive(obj, true);
+        NGUITools.SetActive(obj, true);
         return false;
     }
     public void SetActive(string path, bool isActive)
@@ -40,7 +40,7 @@ public class CacheGameObjectActiveMap
         {
             return;
         }
-        UnityObjectExtension.SetActive(_mapObjects[path], isActive);
+        NGUITools.SetActive(_mapObjects[path], isActive);
     }
     public void Add(string strKey, GameObject obj)
     {
@@ -74,7 +74,7 @@ public class CacheGameObjectActiveMap
         {
             if (item.Key != ignore)
             {
-                UnityObjectExtension.SetActive(item.Value, active);
+                NGUITools.SetActive(item.Value, active);
             }
         }
     }

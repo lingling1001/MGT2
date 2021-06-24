@@ -9,10 +9,10 @@ using UnityEditor;
 public class AutoBindGlobalSetting : ScriptableObject
 {
     [SerializeField]
-    private string m_CodePath;
+    private string m_CodePath = string.Empty;
 
     [SerializeField]
-    private string m_Namespace;
+    private string m_Namespace = string.Empty;
 
     public string CodePath
     {
@@ -29,7 +29,7 @@ public class AutoBindGlobalSetting : ScriptableObject
         {
             return m_Namespace;
         }
-      
+
     }
 
     [MenuItem("MGTools/CreateAutoBindGlobalSetting")]
@@ -42,8 +42,8 @@ public class AutoBindGlobalSetting : ScriptableObject
             EditorUtility.DisplayDialog("警告", $"已存在AutoBindGlobalSetting，路径:{path}", "确认");
             return;
         }
-     
-        
+
+
 
         AutoBindGlobalSetting setting = CreateInstance<AutoBindGlobalSetting>();
         AssetDatabase.CreateAsset(setting, "Assets/AutoBindGlobalSetting.asset");

@@ -5,41 +5,84 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIHelper
+public static class UIHelper
 {
 
+    public static Vector3 WorldToCanvasPosition(this Canvas canvas, Vector3 worldPosition, Camera camera = null)
+    {
+        if (camera == null)
+        {
+            camera = Camera.main;
+        }
+        var viewportPosition = camera.WorldToViewportPoint(worldPosition);
+        return canvas.ViewportToCanvasPosition(viewportPosition);
+    }
+
+    public static Vector3 ScreenToCanvasPosition(this Canvas canvas, Vector3 screenPosition)
+    {
+        var viewportPosition = new Vector3(screenPosition.x / Screen.width,
+                                           screenPosition.y / Screen.height,
+                                           0);
+        return canvas.ViewportToCanvasPosition(viewportPosition);
+    }
+
+    public static void SetRawImage(RawImage image, string headIcon)
+    {
+        if (image == null || string.IsNullOrEmpty(headIcon))
+        {
+            return;
+        }
+        Texture2D obj = ResLoadHelper.LoadAsset<Texture2D>(headIcon);
+        image.texture = obj;
+    }
+    public static void SetAtlasImage(AtlasImage image, string headIcon)
+    {
+        if (image == null || string.IsNullOrEmpty(headIcon))
+        {
+            return;
+        }
+        image.spriteName = headIcon;
+    }
+    public static Vector3 ViewportToCanvasPosition(this Canvas canvas, Vector3 viewportPosition)
+    {
+        var centerBasedViewPortPosition = viewportPosition - new Vector3(0.5f, 0.5f, 0);
+        var canvasRect = canvas.GetComponent<RectTransform>();
+        var scale = canvasRect.sizeDelta;
+        return Vector3.Scale(centerBasedViewPortPosition, scale);
+    }
+
+
+    public static Vector2 WorldToUI(Vector3 pos)
+    {
+        return WorldToCanvasPosition(UIManager.Instance.UICanvas, pos);
+    }
     /// <summary>
     /// 世界转UI坐标
     /// </summary>
-    public static Vector3 WorldToUI(Vector3 pos)
+    public static Vector2 WorldToUI(RectTransform canvas, Camera camera, Vector3 worldPos)
     {
-        float resolutionX = UIManager.Instance.CavScaler.referenceResolution.x;
-        float resolutionY = UIManager.Instance.CavScaler.referenceResolution.y;
-        Vector3 viewportPos = CameraManager.Instance.MainCamera.WorldToViewportPoint(pos);
-
-        Vector3 uiPos = new Vector3(viewportPos.x * resolutionX - resolutionX * 0.5f,
-            viewportPos.y * resolutionY - resolutionY * 0.5f, 0);
-        return uiPos;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        Vector2 movePos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas, screenPos, camera, out movePos);
+        //Convert the local point to world point
+        return canvas.transform.TransformPoint(movePos);
     }
 
-    public static Vector2 WorldToUIPoint(Transform worldGo)
+
+    public static Vector2 WorldToUIPoint(Vector3 worldPos)
     {
-        Camera camera = CameraManager.Instance.MainCamera;
+        return WorldToUIPoint(GameManager.QGetOrAddMgr<CameraManager>().MainCamera, worldPos);
+    }
+    public static Vector2 WorldToUIPoint(Camera camera, Vector3 worldPos)
+    {
         Vector2 pos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(UIManager.Instance.UICanvas.transform as RectTransform,
-             camera.WorldToScreenPoint(worldGo.transform.position), UIManager.Instance.UICanvas.worldCamera, out pos);
+             camera.WorldToScreenPoint(worldPos), UIManager.Instance.UICanvas.worldCamera, out pos);
         return pos;
     }
 
 
 
-    /// <summary>
-    /// 获取UI路径
-    /// </summary>
-    public static string GetUIPath(EnumUIType type)
-    {
-        return type.GetDescriptionUIName();
-    }
     private static Dictionary<int, Color> MapQualColor;
     public static Color GetQualColor(int type)
     {
@@ -68,14 +111,35 @@ public class UIHelper
             texName.text = name;
         }
     }
-    public static void SetTexture(Image img, string path)
+
+
+    /// <summary>
+    /// 拼接数量 。
+    /// </summary>
+    public static string GetStrCount(string count, EnumCountStrType type = EnumCountStrType.C)
     {
-        if (img == null)
+        if (type == EnumCountStrType.X)
         {
-            return;
+            return " x " + count;
         }
-        img.sprite = AtlasManager.Instance.GetSprite(path);
+        else if (type == EnumCountStrType.ADD)
+        {
+            return " + " + count;
+        }
+        else if (type == EnumCountStrType.C)
+        {
+            return " : " + count;
+        }
+        else if (type == EnumCountStrType.Asterisk)
+        {
+            return " * " + count;
+        }
+        else
+        {
+            return count;
+        }
     }
+
 
     /// <summary>
     /// 简单 Item重复利用
@@ -86,7 +150,7 @@ public class UIHelper
     /// <param name="datas">数据集合</param>
     /// <param name="getItem">创建物品</param>
     /// <param name="call">设置物品数据</param>
-    public static void SetListData<TItem, TData>(IList<TItem> listItem, IList<TData> datas, System.Func<TItem> getItem,
+    public static void SetItemsList<TItem, TData>(IList<TItem> listItem, IList<TData> datas, System.Func<TItem> getItem,
                                                  System.Action<TItem, TData> setItemData) where TItem : Component
     {
         if (setItemData != null)
@@ -151,7 +215,7 @@ public class UIHelper
             }
         }
     }
-    public static void SetDictionaryData<TK, TItem, TData>(Dictionary<TK, TItem> listItem, Dictionary<TK, TData> datas, System.Func<TItem> getItem, System.Action<TK, TItem, TData> setItemData, System.Func<TK> getTempKey) where TItem : Component
+    public static void SetItemsDictionary<TK, TItem, TData>(Dictionary<TK, TItem> listItem, Dictionary<TK, TData> datas, System.Func<TItem> getItem, System.Action<TK, TItem, TData> setItemData, System.Func<TK> getTempKey) where TItem : Component
     {
         if (listItem == null || datas == null)
         {
@@ -184,7 +248,7 @@ public class UIHelper
                 continue;
             }
             //设置数据
-            UnityObjectExtension.SetActive(tItem.gameObject, true);
+            NGUITools.SetActive(tItem.gameObject, true);
             setItemData(item.Key, tItem, item.Value);
             listItem.Add(item.Key, tItem);
         }
@@ -206,7 +270,7 @@ public class UIHelper
             {
                 Log.Error(" Key Error  " + key);
             }
-            UnityObjectExtension.SetActive(tempItems[cnt], false);
+            NGUITools.SetActive(tempItems[cnt], false);
         }
     }
 
@@ -228,4 +292,26 @@ public class UIHelper
     {
         RenderTexture.ReleaseTemporary(rt);
     }
+}
+
+public enum EnumCountStrType
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    x,
+    X,
+    /// <summary>
+    /// ：
+    /// </summary>
+    C,
+    /// <summary>
+    /// +
+    /// </summary>
+    ADD,
+    None,
+    /// <summary>
+    /// *星号
+    /// </summary>
+    Asterisk,
 }

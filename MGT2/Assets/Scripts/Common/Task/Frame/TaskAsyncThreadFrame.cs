@@ -12,13 +12,19 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
 
     private Thread _thread;
     private EventWaitHandle _eventWait = new EventWaitHandle(false, EventResetMode.ManualReset);
-    private CalcIntervalTime _calcInterval = new CalcIntervalTime();
     private Stopwatch _stopWatch = new Stopwatch();
-    private long _intervalTicks;
+    /// <summary>
+    /// 运行间隔 毫秒
+    /// </summary>
+    private int _intervalMs;
+    public int IntervalMs { get { return _intervalMs; } }
     private long _curFrameCount;
     public long CurFrameCount { get { return _curFrameCount; } }
 
+    private long _startTime;
     private long _tempTime;
+
+    public event System.Action<long, long> EventExecute;
     /// <summary>
     /// 循环执行
     /// </summary>
@@ -30,16 +36,17 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
         _thread = new Thread(Execute);
         SetRunStatus(TaskAsynStatus.None);
         SetIntervalMs(intervalMs);
+
     }
 
     public bool Start()
     {
         if (TaskStatus == TaskAsynStatus.None)
         {
-            SetRunStatus(TaskAsynStatus.Running);
+            SetRunStatus(TaskAsynStatus.Run);
             _curFrameCount = 0;
-            _stopWatch.Start();
-            _calcInterval.Start(_stopWatch.ElapsedTicks, _intervalTicks);
+            _stopWatch.Restart();
+            _startTime = _stopWatch.ElapsedMilliseconds;
             _thread.Start();
             return true;
         }
@@ -48,26 +55,20 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
 
     public bool Suspend()
     {
-        SetRunStatus(TaskAsynStatus.Suspended);
+        SetRunStatus(TaskAsynStatus.Suspend);
         return true;
-
     }
 
     public bool Resume()
     {
-        if (TaskStatus == TaskAsynStatus.Suspended)
-        {
-            _eventWait.Set();
-            _stopWatch.Start();
-            SetRunStatus(TaskAsynStatus.Running);
-            return true;
-        }
-        return false;
+        SetRunStatus(TaskAsynStatus.Run);
+        return true;
+
     }
+
 
     public void Stop()
     {
-        _stopWatch.Stop();
         SetRunStatus(TaskAsynStatus.Stop);
     }
 
@@ -82,7 +83,7 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     /// </summary>
     public void SetIntervalMs(int intervalMs)
     {
-        _intervalTicks = intervalMs * System.TimeSpan.TicksPerMillisecond;
+        _intervalMs = intervalMs;
     }
 
     private void Execute()
@@ -91,17 +92,29 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
         {
             if (TaskStatus == TaskAsynStatus.Running)
             {
-                _tempTime = _calcInterval.ExecuteSubValue(_stopWatch.ElapsedTicks);
-                if (_tempTime < 0)
+                //目标时间减去当前时间
+                _tempTime = (_stopWatch.ElapsedMilliseconds - _startTime) / _intervalMs;
+                if (_curFrameCount != _tempTime)
                 {
-                    _calcInterval.Start(_stopWatch.ElapsedTicks, _intervalTicks - _tempTime);
-                    _curFrameCount++;
+                    _curFrameCount = _tempTime;
                     OnExecute(CurFrameCount, _stopWatch.ElapsedTicks);
+                    Thread.Sleep(_intervalMs);
                 }
+            }
+            else if (TaskStatus == TaskAsynStatus.Run)
+            {
+                _eventWait.Set();
+                _stopWatch.Start();
+                SetRunStatus(TaskAsynStatus.Running);
+            }
+            else if (TaskStatus == TaskAsynStatus.Suspend)
+            {
+                _stopWatch.Stop();
+                _eventWait.WaitOne();
+                SetRunStatus(TaskAsynStatus.Suspended);
             }
             else if (TaskStatus == TaskAsynStatus.Suspended)
             {
-                _eventWait.WaitOne();
                 continue;
             }
             else if (TaskStatus == TaskAsynStatus.Stop)
@@ -112,10 +125,11 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
         _thread.Abort();
     }
 
-    protected virtual void OnExecute(long frameCount, long ticks)
+    private void OnExecute(long frameCount, long ticks)
     {
-
-
-
+        if (EventExecute != null)
+        {
+            EventExecute(frameCount, ticks);
+        }
     }
 }

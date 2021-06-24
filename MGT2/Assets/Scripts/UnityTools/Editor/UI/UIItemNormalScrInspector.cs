@@ -107,6 +107,9 @@ public class UIItemNormalScrInspector : Editor
             case UIItemNormalScr.EItemMemberType.UITexture:
                 memberInfo.m_mono = EditorGUILayout.ObjectField(memberInfo.m_mono, typeof(Image), true) as Image;
                 break;
+            case UIItemNormalScr.EItemMemberType.RawImage:
+                memberInfo.m_mono = EditorGUILayout.ObjectField(memberInfo.m_mono, typeof(RawImage), true) as RawImage;
+                break;
             default:
                 break;
         }

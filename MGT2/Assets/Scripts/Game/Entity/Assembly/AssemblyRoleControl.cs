@@ -1,28 +1,23 @@
-﻿using UnityEngine;
-
-public class AssemblyRoleControl : AssemblyBase, IObserverAssembly
+﻿/// <summary>
+/// 角色控制
+/// </summary>
+public class AssemblyRoleControl : AssemblyBase
 {
-    private AssemblyRole assemblyRole;
-    private Vector3 offsetPos = new Vector3(0, 5, -5);
-
-    public override void OnInit(EnumAssemblyType assemblyType, AssemblyEntityBase owner)
+    public EnumRoleControl Type;
+    public void SetRoleType(EnumRoleControl type)
     {
-        base.OnInit(assemblyType, owner);
-        assemblyRole = owner.GetData<AssemblyRole>(EnumAssemblyType.Role);
-        owner.RegisterObserver(this);
+        Type = type;
     }
-
-    public void UpdateAssembly(EnumAssemblyOperate operate, IAssembly data)
-    {
-        if (operate != EnumAssemblyOperate.Position)
-        {
-            return;
-        }
-        CameraManager.Instance.RefreshTargetPos(assemblyRole.Position + offsetPos);
-    }
-    public override void OnRelease()
-    {
-        Owner.RemoveObserver(this);
-        base.OnRelease();
-    }
+}
+public enum EnumRoleControl
+{
+    None,
+    /// <summary>
+    /// 自己
+    /// </summary>
+    Self,
+    /// <summary>
+    /// 自己控制
+    /// </summary>
+    Control,
 }

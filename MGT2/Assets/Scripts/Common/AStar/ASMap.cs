@@ -4,10 +4,18 @@ using UnityEngine;
 public class ASMap
 {
     private ASNode[,] _map;
+    /// <summary>
+    /// 地图长度
+    /// </summary>
     private int _mapX;
+    /// <summary>
+    /// 地图宽度（高？）
+    /// </summary>
     private int _mapY;
+    /// <summary>
+    /// 格子大小
+    /// </summary>
     private int _gridSize;
-
     /// <summary>
     /// 地图宽度
     /// </summary>
@@ -181,11 +189,19 @@ public class ASMap
     /// <summary>
     /// 获取周围一个不是阻挡的点
     /// </summary>
-    public ASNode GetNodeNearest(ASNode node, int range = 5)
+    public ASNode GetNodeNearest(ASNode node, int range = 3)
     {
+        if (node == null)
+        {
+            return null;
+        }
         if (node.CanWalk)
         {
             return node;
+        }
+        if (range < 1)
+        {
+            return null;
         }
         ASNode curNode;
         int temp = 0;
@@ -216,6 +232,12 @@ public class ASMap
             return _map[x, y];
         }
         return null;
+    }
+    public ASNode GetNode(int index)
+    {
+        int x = index % this.MapSizeX;
+        int y = index / this.MapSizeX;
+        return GetNode(x, y);
     }
 
 

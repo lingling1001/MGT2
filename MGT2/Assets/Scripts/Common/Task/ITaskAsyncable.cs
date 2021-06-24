@@ -5,12 +5,12 @@ public interface ITaskAsyncable
     /// <summary>
     /// 获取ID
     /// </summary>
-    int TaskId{ get; }
+    int TaskId { get; }
 
     /// <summary>
     /// 状态。
     /// </summary>
-    TaskAsynStatus TaskStatus{ get; }
+    TaskAsynStatus TaskStatus { get; }
 
     /// <summary> 
     /// 开始运行
@@ -35,10 +35,24 @@ public interface ITaskAsyncable
 
 
 }
-public  enum TaskAsynStatus
+public enum TaskAsynStatus
 {
     None = 0,
-    Running = 1,
-    Suspended = 2,
-    Stop = 3,
+    /// <summary>
+    /// 开始运行
+    /// </summary>
+    Run,
+    /// <summary>
+    /// 运行中
+    /// </summary>
+    Running,
+    /// <summary>
+    /// 开始暂停
+    /// </summary>
+    Suspend,
+    /// <summary>
+    /// 暂停中
+    /// </summary>
+    Suspended,
+    Stop,
 }

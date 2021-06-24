@@ -8,24 +8,33 @@ public class PrototypeHelper
 {
     public static void LoadAllData()
     {
-        //主界面
-        LoadData<PrototypeMainUI>(GetConfig("MainUI"));
-        //主界面样式
-        LoadData<PrototypeMainUIStyle>(GetConfig("MainUIStyle"));
-        //能力
-        LoadData<PrototypeAbility>(GetConfig("Ability"));
         //角色
         LoadData<PrototypeRole>(GetConfig("Role"));
-        //游戏配置
-        LoadData<PrototypeGameConfig>(GetConfig("GameConfig"));
+        LoadData<PrototypeAbility>(GetConfig("Ability"));
         //地图信息
         LoadData<PrototypeMap>(GetConfig("Map"));
-        //属性
-        LoadData<PrototypeAttribute>(GetConfig("Attribute"));
-        //武器挂载信息
-        LoadData<PrototypeLoadWeapon>(GetConfig("LoadWeapon"));
-        //武器信息
-        LoadData<PrototypeWeapon>(GetConfig("Weapon"));
+
+        LoadData<PrototypeHeadIcon>(GetConfig("HeadIcon"));
+
+
+        ////主界面
+        //LoadData<PrototypeMainUI>(GetConfig("MainUI"));
+        ////主界面样式
+        //LoadData<PrototypeMainUIStyle>(GetConfig("MainUIStyle"));
+        ////能力
+
+        ////角色
+        //LoadData<PrototypeRole>(GetConfig("Role"));
+        ////游戏配置
+        //LoadData<PrototypeGameConfig>(GetConfig("GameConfig"));
+        ////地图信息
+        //LoadData<PrototypeMap>(GetConfig("Map"));
+        ////属性
+        //LoadData<PrototypeAttribute>(GetConfig("Attribute"));
+        ////武器挂载信息
+        //LoadData<PrototypeLoadWeapon>(GetConfig("LoadWeapon"));
+        ////武器信息
+        //LoadData<PrototypeWeapon>(GetConfig("Weapon"));
 
 
 
@@ -88,15 +97,24 @@ public class PrototypeHelper
     }
 
 
-    private static string GetConfig(string strValue)
+    public static string GetConfig(string strValue, string extension = ".xml")
     {
-        string path = "Config/" + strValue + ".xml";
-        UnityEngine.Object objData = PreLoadResHelper.Instance.LoadAsset(path);
+        string path = "Config/" + strValue + extension;
+        UnityEngine.Object objData = PreResLoadHelper.Instance.LoadAsset(path);
         if (objData == null)
         {
             Log.Error(" Get Config Error " + strValue);
             return string.Empty;
         }
         return objData.ToString();
+    }
+
+    public static string GetConfigName(string strValue, string extension = ".xml")
+    {
+        if (string.IsNullOrEmpty(extension))
+        {
+            return "Config/" + strValue;
+        }
+        return "Config/" + strValue + extension;
     }
 }

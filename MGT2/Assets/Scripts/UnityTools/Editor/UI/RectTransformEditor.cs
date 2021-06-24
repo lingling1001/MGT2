@@ -113,7 +113,7 @@ public class RectTransformEditor : DecoratorEditor
             {
                 list.Clear();
                 list.Add(trans.gameObject);
-                UnityObjectExtension.FindHideChildGameObject(list, trans, listFis[cnt].Name);
+                NGUITools.FindHideChildGameObject(list, trans, listFis[cnt].Name);
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (listFis[cnt].Name == list[i].name)

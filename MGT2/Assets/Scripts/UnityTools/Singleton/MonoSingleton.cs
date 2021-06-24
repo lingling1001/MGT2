@@ -2,7 +2,7 @@
 using System.Reflection;
 using MFrameWork;
 
-public class MonoSingleton<T> : MonoBehaviour, ISingleton<T> where T : MonoBehaviour, ISingleton<T>
+public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     //单例模式
     protected static T _instance;
@@ -18,26 +18,30 @@ public class MonoSingleton<T> : MonoBehaviour, ISingleton<T> where T : MonoBehav
                 {
                     if (null == _instance)
                     {
-                        GameObject obj = new GameObject(typeof(T).ToString());
-                        _instance = obj.AddComponent<T>();
-                        MemberInfo info = typeof(T);
-                        var attributes = info.GetCustomAttributes(true);
-                        foreach (var atribute in attributes)
+                        _instance = GameObject.FindObjectOfType<T>();
+                        if (_instance == null)
                         {
-                            var defineAttri = atribute as MonoSingletonPath;
-                            if (defineAttri != null)
+                            GameObject obj = new GameObject(typeof(T).ToString());
+                            _instance = obj.AddComponent<T>();
+                            MemberInfo info = typeof(T);
+                            var attributes = info.GetCustomAttributes(true);
+                            foreach (var atribute in attributes)
                             {
-                                obj.name = defineAttri.PathInHierarchy;
-                                break;
+                                var defineAttri = atribute as MonoSingletonPath;
+                                if (defineAttri != null)
+                                {
+                                    obj.name = defineAttri.PathInHierarchy;
+                                    break;
+                                }
                             }
+                            GameObject parent = GameObject.Find("[ManagerObjectNode]");
+                            if (parent == null)
+                            {
+                                parent = new GameObject("[ManagerObjectNode]");
+                                UnityEngine.GameObject.DontDestroyOnLoad(parent);
+                            }
+                            obj.transform.SetParent(parent.transform);
                         }
-                        GameObject parent = GameObject.Find("[ManagerObjectNode]");
-                        if (parent == null)
-                        {
-                            parent = new GameObject("[ManagerObjectNode]");
-                            UnityEngine.GameObject.DontDestroyOnLoad(parent);
-                        }
-                        obj.transform.SetParent(parent.transform);
                     }
                 }
             }
@@ -45,33 +49,21 @@ public class MonoSingleton<T> : MonoBehaviour, ISingleton<T> where T : MonoBehav
         }
     }
 
-    public static T Initial()
+    public static bool InstanceIsValid()
     {
-        return Instance;
-    }
-    public static void Release()
-    {
-        if (_instance != null)
+        if (_instance == null || Equals(_instance, null))
         {
-            GameObject.Destroy(_instance.gameObject);
-            _instance = null;
+            return false;
         }
-    }
-    private void Awake()
-    {
-        OnInit();
-    }
-    private void OnDestroy()
-    {
-        OnRelease();
+        return true;
     }
 
-    protected virtual void OnInit()
+    public static void ReleaseInstance()
     {
-
-    }
-    protected virtual void OnRelease()
-    {
+        if (InstanceIsValid())
+        {
+            GameObject.DestroyImmediate(_instance.gameObject);
+        }
 
     }
 

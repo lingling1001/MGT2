@@ -1,25 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
-public static class ResLoadHelper
+public class ResLoadHelper : MonoSingleton<ResLoadHelper>
 {
 
-    public static void LoadAssetAsync<T>(string assetName, Action<T> eventLoadFinish)
+    public static AsyncOperationHandle<Object> LoadAssetAsync(string assetName)
     {
-        Addressables.LoadAssetAsync<T>(assetName).Completed += (obj) =>
-        {
-            if (obj.IsDone)
-            {
-                eventLoadFinish(obj.Result);
-            }
-        };
+        return Addressables.LoadAssetAsync<Object>(assetName);
     }
-    public static void LoadAssetAsync<T>(IResourceLocation location, Action<T> eventLoadFinish)
+
+    public static void LoadAssetAsync<T>(string assetName, System.Action<T> eventLoadFinish)
+    {
+        try
+        {
+            Addressables.LoadAssetAsync<T>(assetName).Completed += (obj) =>
+             {
+                 if (obj.IsDone)
+                 {
+                     eventLoadFinish(obj.Result);
+                 }
+             };
+        }
+        catch (System.Exception e)
+        {
+            Log.Error(e.ToString());
+        }
+    }
+
+    public static void LoadAssetAsync<T>(IResourceLocation location, System.Action<T> eventLoadFinish)
     {
         Addressables.LoadAssetAsync<T>(location).Completed += (obj) =>
         {
@@ -29,30 +40,14 @@ public static class ResLoadHelper
             }
         };
     }
-    public static void LoadAssetsAsync<T>(IList<IResourceLocation> assets, Action<T> eventLoadFinish)
+    public static void LoadAssetsAsync<T>(IList<IResourceLocation> assets, System.Action<T> eventLoadFinish)
     {
         Addressables.LoadAssetsAsync<T>(assets, eventLoadFinish);
     }
-    public static void LoadAssetInstantiateAsync(string assetName, Action<GameObject> eventLoadFinish, Transform parent = null)
-    {
-        try
-        {
-            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(assetName, parent);
-            handle.Completed += obj =>
-            {
-                if (obj.IsDone)
-                {
-                    eventLoadFinish(handle.Result);
-                }
-            };
-        }
-        catch (Exception e)
-        {
-            Log.Error(e.ToString());
-            Log.Error(" assetName Exception  " + assetName);
-        }
-    }
-    public static void LoadResourceLocationsAsync(string assetName, Action<List<IResourceLocation>> callback)
+
+
+
+    public static void LoadResourceLocationsAsync(string assetName, System.Action<List<IResourceLocation>> callback)
     {
         Addressables.LoadResourceLocationsAsync(assetName).Completed += (obj) =>
         {
@@ -70,7 +65,7 @@ public static class ResLoadHelper
 
     public static T LoadAsset<T>(string assetName) where T : UnityEngine.Object
     {
-        UnityEngine.Object obj = PreLoadResHelper.Instance.LoadAsset(assetName);
+        UnityEngine.Object obj = PreResLoadHelper.Instance.LoadAsset(assetName);
         if (obj == null)
         {
             Log.Error("LoadAsset Error Path " + assetName);
@@ -79,17 +74,13 @@ public static class ResLoadHelper
         return obj as T;
     }
 
-    public static T Instantiate<T>(T obj) where T : UnityEngine.Object
+    public static void DestroyObject(GameObject obj)
     {
-        return UnityEngine.Object.Instantiate<T>(obj);
-    }
-    public static T Instantiate<T>(T obj, Transform parent) where T : UnityEngine.Object
-    {
-        return UnityEngine.Object.Instantiate<T>(obj, parent);
-    }
-
-    public static void Destory(GameObject objUI)
-    {
-        GameObject.Destroy(objUI);
+        if (obj == null || obj.Equals(null))
+        {
+            return;
+        }
+        GameObject.Destroy(obj);
     }
 }
+

@@ -29,7 +29,7 @@ public class TaskAsynManager : Singleton<TaskAsynManager>
         return null;
     }
 
-    public T GetTaskAsyn<T>(int id) where T:class, ITaskAsyncable
+    public T GetTaskAsyn<T>(int id) where T : class, ITaskAsyncable
     {
         if (ContainTask(id))
         {
@@ -48,6 +48,15 @@ public class TaskAsynManager : Singleton<TaskAsynManager>
         }
     }
 
+    public int GetFreeTaskId()
+    {
+        int taskId = 1;
+        while (mapTaskAsync.ContainsKey(taskId))
+        {
+            taskId++;
+        }
+        return taskId;
+    }
     private void RemoveTask(int id)
     {
         if (ContainTask(id))
@@ -65,5 +74,5 @@ public class TaskAsynManager : Singleton<TaskAsynManager>
         }
     }
 
-   
+
 }

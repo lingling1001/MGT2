@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class ComponentAutoBindTool : MonoBehaviour
 {
+
 #if UNITY_EDITOR
     [Serializable]
     public class BindData
@@ -74,18 +75,15 @@ public class ComponentAutoBindTool : MonoBehaviour
     {
         if (index >= m_BindComs.Count)
         {
-            Debug.LogError("索引无效");
+            Log.Error("索引无效 Index {0} Count {1} {2}", index, m_BindComs.Count, gameObject.name);
             return null;
         }
-
         T bindCom = m_BindComs[index] as T;
-
         if (bindCom == null)
         {
-            Debug.LogError("类型无效");
+            Log.Error("类型无效 Index {0} Type {1} {2}", index, typeof(T),gameObject.name);
             return null;
         }
-
         return bindCom;
     }
 }

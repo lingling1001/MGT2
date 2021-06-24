@@ -6,8 +6,7 @@ public class AssemblyAttribute : AssemblyBase
 {
     private Dictionary<int, AttributeData> _mapAttributes = new Dictionary<int, AttributeData>();
     private Dictionary<int, AttributeDataChange> _mapAttributeChange = new Dictionary<int, AttributeDataChange>();
-
-
+    public Dictionary<int, AttributeData> MapAttributes { get { return _mapAttributes; } }
     public void Initial(List<AttributeData> listData)
     {
         for (int cnt = 0; cnt < listData.Count; cnt++)
@@ -23,7 +22,7 @@ public class AssemblyAttribute : AssemblyBase
             _mapAttributes[key].Value = value;
         }
     }
-    public int GetValue(int key)
+    public long GetValue(int key)
     {
         if (ContainsKey(key))
         {
@@ -36,6 +35,7 @@ public class AssemblyAttribute : AssemblyBase
     {
         return _mapAttributes.ContainsKey(key);
     }
+
     private void AddValue(int key, int value)
     {
         AddValue(new AttributeData(key, value)); ;
@@ -72,40 +72,4 @@ public class AssemblyAttribute : AssemblyBase
     }
 
 }
-public class AttributeData : AttributeDataBase
-{
-    public int Value;
-
-    public AttributeData(int key, int value)
-    {
-        Key = key;
-        Value = value;
-    }
-}
-
-
-public class AttributeDataChange : AttributeDataBase
-{
-    public long PreviousValue { get { return _previousValue; } }
-    public long CurrentValue { get { return _currentValue; } }
-    private long _previousValue;
-    private long _currentValue;
-    public AttributeDataChange(int key, long pre, long cur)
-    {
-        Key = key;
-        _previousValue = pre;
-        _currentValue = cur;
-    }
-    public long GetSub()
-    {
-        return CurrentValue - PreviousValue;
-    }
-}
-
-public class AttributeDataBase
-{
-    public int Key;
-}
-
-
 

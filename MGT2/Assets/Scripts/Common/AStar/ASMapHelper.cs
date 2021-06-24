@@ -3,6 +3,29 @@ using UnityEngine;
 
 public class ASMapHelper
 {
+
+    public static float GetNodeSize(ASMap map)
+    {
+        return GetNodeSize(map.GridSize);
+    }
+    public static float GetNodeSize(int gridSize)
+    {
+        return gridSize / 10.0f;
+    }
+
+    public static Vector3 GetCenterPoaByXY(int x, int y, float gridSize)
+    {
+        return new Vector3(x * gridSize + gridSize / 2, 0, y * gridSize + gridSize / 2);
+    }
+    public static Vector3 ConverNodeToVector(ASNode node, ASMap map)
+    {
+        float gridSize = GetNodeSize(map);
+        return ConverNodeToVector(node, gridSize);
+    }
+    public static Vector3 ConverNodeToVector(ASNode node, float gridSize)
+    {
+        return new Vector3(node.x * gridSize, 0, node.y * gridSize);
+    }
     /// <summary>
     /// 文本转换成地图信息
     /// </summary>
@@ -13,7 +36,7 @@ public class ASMapHelper
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {
-                map[x, y] = new ASNode(x, y, strInfos[y * sx + x] == '1');
+                map[x, y] = new ASNode(x, y, sx, strInfos[y * sx + x] == '1');
             }
         }
         return map;
@@ -24,9 +47,11 @@ public class ASMapHelper
     public static string ConvertMapToTxt(ASNode[,] map)
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        for (int y = 0; y < map.GetLength(1); y++)
+        int maxY = map.GetLength(1);
+        int maxX = map.GetLength(0);
+        for (int y = 0; y < maxY; y++)
         {
-            for (int x = 0; x < map.GetLength(0); x++)//先保存x行
+            for (int x = 0; x < maxX; x++)//先保存x行
             {
                 sb.Append(map[x, y].CanWalk ? "1" : "0");
             }
@@ -38,6 +63,10 @@ public class ASMapHelper
     public static List<Vector3> ConverNodeToVectors(List<ASNode> list, float gridSize, int rate = 2)
     {
         List<Vector3> listPos = new List<Vector3>();
+        if (list.Count == 0)
+        {
+            return listPos;
+        }
         int count = list.Count - 1;
         for (int cnt = 0; cnt < list.Count; cnt++)
         {
@@ -50,10 +79,7 @@ public class ASMapHelper
         return listPos;
     }
 
-    public static Vector3 ConverNodeToVector(ASNode node, float gridSize)
-    {
-        return new Vector3(node.x * gridSize, 0, node.y * gridSize);
-    }
+
     /// <summary>
     /// 获取周围格子信息
     /// </summary>
@@ -92,4 +118,14 @@ public class ASMapHelper
         }
         return arrs;
     }
+
+
 }
+//public static Vector3 GetOffsetPosition(ASMap map, float gridHalfSize)
+//{
+//    return GetOffsetPosition(map.MapSizeX, map.MapSizeY, gridHalfSize);
+//}
+//public static Vector3 GetOffsetPosition(int x, int y, float gridHalfSize)
+//{
+//    return new Vector3(x * gridHalfSize, 0, y * gridHalfSize);
+//}

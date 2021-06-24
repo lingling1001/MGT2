@@ -3,36 +3,41 @@ using System;
 using UnityEngine;
 public class AssemblyView : AssemblyBase
 {
-    public string EntityName { get; private set; }
-    public string EntityPath { get; private set; }
-    public string EntityLayer { get; private set; }
-    public GameObject ObjEntity { get; private set; }
-    public Transform Trans { get; private set; }
+    public string EntityPath;
+    public string EntityLayer;
+    [Newtonsoft.Json.JsonIgnore] public Transform Trans { get; private set; }
+    [Newtonsoft.Json.JsonIgnore] public GameObject ObjEntity { get; private set; }
 
-    public void SetPath(string strName, string param, string layer)
+    public void SetPath(string strPath)
     {
-        EntityPath = param;
-        EntityLayer = layer;
-        EntityName = strName;
-        ResLoadHelper.LoadAssetInstantiateAsync(EntityPath, EventLoadFinish, MapEntityManager.Instance.TranParent);
-        Log.Info(strName + "  " + param);
-
+        SetPath(strPath, DefineLayer.ENTITY);
     }
+    public void SetPath(string strPath, string layer)
+    {
+        EntityPath = strPath;
+        EntityLayer = layer;
+        ReadDataFinish();
+    }
+    public override void ReadDataFinish()
+    {
+        if (string.IsNullOrEmpty(EntityPath))
+        {
+            return;
+        }
+        ResLoadManager.Instance.LoadAssetInstantiateAsync(EntityPath, EventLoadFinish);
+    }
+
 
     private void EventLoadFinish(GameObject obj)
     {
         if (Owner == null)
         {
             GameObject.DestroyImmediate(obj);
-            Log.Error(EntityPath + "   EventLoadFinish  Entity Is Null   " + EntityName);
+            Log.Error(EntityPath + "   EventLoadFinish  Entity Is Null   ");
             return;
         }
         ObjEntity = obj;
-        ObjEntity.name = EntityName;
         Trans = obj.transform;
-        ObjEntity.layer = LayerMask.NameToLayer(EntityLayer);
-        LinkMonoView link = ObjEntity.GetOrAddComponent<LinkMonoView>();
-        link.Link(this.Owner as AssemblyEntityBase);
         Owner.NotifyObserver(EnumAssemblyOperate.ViewLoadFinish, this);
 
     }
@@ -46,7 +51,7 @@ public class AssemblyView : AssemblyBase
         return false;
     }
 
-    public override void OnRelease()
+    protected override void OnRelease()
     {
         if (!ObjEntityIsNull())
         {

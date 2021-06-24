@@ -14,7 +14,7 @@ public class DefaultAutoBindRuleHelper : IAutoBindRuleHelper
     private Dictionary<string, string> m_PrefixesDict = new Dictionary<string, string>()
     {
         {"Trans","Transform" },
-        {"OldAnim","Animation"}, 
+        {"OldAnim","Animation"},
         {"NewAnim","Animator"},
 
         {"Rect","RectTransform"},
@@ -28,8 +28,9 @@ public class DefaultAutoBindRuleHelper : IAutoBindRuleHelper
         {"Btn","Button"},
         {"Img","Image"},
         {"RImg","RawImage"},
+        {"AImg","AtlasImage"},
         {"Txt","TextMeshProUGUI"},
-        {"Input","InputField"},
+        {"Input","TMP_InputField"},
         {"Slider","Slider"},
         {"Mask","Mask"},
         {"Mask2D","RectMask2D"},
@@ -37,9 +38,10 @@ public class DefaultAutoBindRuleHelper : IAutoBindRuleHelper
         {"Sbar","Scrollbar"},
         {"SRect","ScrollRect"},
         {"Drop","Dropdown"},
-    };
+        {"Scr","UIItemNormalScr"},
+};
 
-    public bool IsValidBind( Transform target, List<string> filedNames, List<string> componentTypeNames)
+    public bool IsValidBind(Transform target, List<string> filedNames, List<string> componentTypeNames)
     {
         string[] strArray = target.name.Split('_');
 
@@ -54,7 +56,7 @@ public class DefaultAutoBindRuleHelper : IAutoBindRuleHelper
         {
             string str = strArray[i];
             string comName;
-            if (m_PrefixesDict.TryGetValue(str,out comName))
+            if (m_PrefixesDict.TryGetValue(str, out comName))
             {
                 filedNames.Add($"{str}_{filedName}");
                 componentTypeNames.Add(comName);

@@ -108,7 +108,7 @@ namespace MemoryProfilerWindow
                     GUILayout.Label("Of type: " + staticFields.typeDescription.name);
                     GUILayout.Label("size: " + staticFields.size);
 
-                    DrawFields(staticFields.typeDescription, new BytesAndOffset() { bytes = staticFields.typeDescription.staticFieldBytes, offset = 0, pointerSize = _unpackedCrawl.virtualMachineInformation.pointerSize}, true);
+                    DrawFields(staticFields.typeDescription, new BytesAndOffset() { bytes = staticFields.typeDescription.staticFieldBytes, offset = 0, pointerSize = _unpackedCrawl.virtualMachineInformation.pointerSize }, true);
                 }
 
                 if (managedObject == null)
@@ -164,7 +164,7 @@ namespace MemoryProfilerWindow
             if (_textureObject != null)
             {
                 EditorGUILayout.LabelField("textureInfo: " + _textureObject.width + "x" + _textureObject.height + " " + _textureObject.format);
-                EditorGUILayout.ObjectField(_textureObject, typeof(Texture2D));
+                EditorGUILayout.ObjectField(_textureObject, typeof(Texture2D), true);
                 _textureSize = EditorGUILayout.Slider(_textureSize, 100.0f, 1024.0f);
                 GUILayout.Label(_textureObject, GUILayout.Width(_textureSize), GUILayout.Height(_textureSize * _textureObject.height / _textureObject.width));
             }
@@ -204,7 +204,7 @@ namespace MemoryProfilerWindow
         private void DrawFields(TypeDescription typeDescription, BytesAndOffset bytesAndOffset, bool useStatics = false)
         {
             int counter = 0;
-        
+
             foreach (var field in TypeTools.AllFieldsOf(typeDescription, _unpackedCrawl.typeDescriptions, useStatics ? TypeTools.FieldFindOptions.OnlyStatic : TypeTools.FieldFindOptions.OnlyInstance))
             {
                 counter++;

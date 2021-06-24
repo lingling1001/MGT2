@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ASMakeManager : MonoBehaviour
+public class ASMakeManager : MonoSingleton<ASMakeManager>
 {
+    public string MapStarName { get { return mMapStarName; } }
+    [HideInInspector] [SerializeField] string mMapStarName;
     public Vector2Int MapSize;
     /// <summary>
     /// 十分制  
@@ -12,81 +14,80 @@ public class ASMakeManager : MonoBehaviour
     public LayerMask ObsLayer;
 
     [HideInInspector]
-    public bool IsShowGizmos = true;
+    public bool IsShowGizmos { get; private set; }
 
     private ASMap _mapInfo;
+    private ASMapDrawView _mapViewInfo;
+
+    public void SetMapName(string strMapName)
+    {
+        mMapStarName = strMapName;
+    }
+
+
     public void RefreshMap()
     {
-        ASNode[,] map = new ASNode[MapSize.x, MapSize.y];
-        float gridSize = GetNodeSize();
+        int x = MapSize.x;
+        int y = MapSize.y;
+        int size = NodeSize;
+        ASNode[,] map = new ASNode[x, y];
+        float gridSize = ASMapHelper.GetNodeSize(size);
         float gridSizeHalf = gridSize / 2;
-        for (int cntY = 0; cntY < MapSize.x; cntY++)
+        //Vector3 mapOffset = ASMapHelper.GetOffsetPosition(x, y, gridSizeHalf);
+        for (int cntY = 0; cntY < y; cntY++)
         {
-            for (int cntX = 0; cntX < MapSize.y; cntX++)
+            for (int cntX = 0; cntX < x; cntX++)
             {
                 Vector3 pos = GetCenterPoaByXY(cntX, cntY, gridSize, gridSizeHalf);
-                bool canWalk = !Physics.CheckBox(pos, Vector3.one * GetNodeSize() / 2 * 0.95f, Quaternion.identity, ObsLayer);
-                map[cntX, cntY] = new ASNode(cntX, cntY, canWalk);
+                bool canWalk = !Physics.CheckBox(pos, Vector3.one * gridSize / 2 * 0.95f, Quaternion.identity, ObsLayer);
+                map[cntX, cntY] = new ASNode(cntX, cntY, MapSize.x, canWalk);
             }
         }
         _mapInfo = new ASMap();
-        _mapInfo.InitialMap(map, MapSize.x, MapSize.y, this.NodeSize);
+        _mapInfo.InitialMap(map, x, y, size);
+
+        RefreshView();
+
     }
 
     public ASNode[,] GetASNodes()
     {
         return _mapInfo.GetASNodes();
     }
-    private float GetNodeSize()
-    {
-        return NodeSize / 10.0f;
-    }
-    public static Vector3 GetCenterPoaByXY(int x, int y, float gridSize, float gridSizeHalf)
-    {
-        Vector3 pos = new Vector3(x * gridSize + gridSizeHalf, 0, y * gridSize + gridSizeHalf);
-        return pos;
-    }
 
-    private void OnDrawGizmos()
+    public Vector3 GetCenterPoaByXY(int x, int y, float gridSize, float gridSizeHalf)
     {
-        if (!IsShowGizmos)
+        Vector3 pos = ASMapHelper.GetCenterPoaByXY(x, y, gridSize);
+        return pos + transform.position;
+    }
+    public void SetIsShowGizmos(bool value)
+    {
+        IsShowGizmos = value;
+        RefreshView();
+    }
+    private void RefreshView()
+    {
+        if (IsShowGizmos)
         {
-            return;
-        }
-        float gridSize = GetNodeSize();
-        float gridSizeHalf = gridSize / 2;
-
-        Vector3 mapPos = new Vector3(MapSize.x, 1, MapSize.y);
-        Vector3 mapSize = new Vector3(GetNodeSize() * MapSize.x / 2, 0, GetNodeSize() * MapSize.y / 2);
-        Gizmos.DrawWireCube(mapPos, mapSize);
-        if (_mapInfo == null)
-        {
-            return;
-        }
-        Vector3 scale = new Vector3(gridSize, 0.01f, gridSize);
-        foreach (var item in _mapInfo.GetASNodes())
-        {
-            if (!item.CanWalk)
+            if (_mapViewInfo == null)
             {
-                Gizmos.color = Color.red;
+                _mapViewInfo = gameObject.AddMissingComponent<ASMapDrawView>();
             }
-            else
-            {
-                Gizmos.color = Color.white;
-            }
-            Vector3 center = GetCenterPoaByXY(item.x, item.y, gridSize, gridSizeHalf);
-            Gizmos.DrawWireCube(center, scale);
         }
-
-
+        if (_mapViewInfo != null)
+        {
+            _mapViewInfo.IsShowGizmos = IsShowGizmos;
+            if (IsShowGizmos)
+            {
+                _mapViewInfo.SetAsMapInfo(_mapInfo);
+            }
+        }
 
     }
 
 
 
-
-
-
+    #region  OLD OBSOLETE
     //private ASNode[,] _map;
     //public int MapSizeX = 100;
     //public int MapSizeY = 100;
@@ -407,4 +408,6 @@ public class ASMakeManager : MonoBehaviour
     //    _temp.AddRange(_use);
     //    _use.Clear();
     //}
+
+    #endregion
 }

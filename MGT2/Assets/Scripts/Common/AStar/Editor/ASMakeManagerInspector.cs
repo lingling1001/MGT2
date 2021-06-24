@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -25,7 +26,15 @@ public class ASMakeManagerInspector : Editor
 
     public override void OnInspectorGUI()
     {
+
         base.OnInspectorGUI();
+
+        SerializedProperty sp = NGUIEditorTools.DrawProperty("MapStarName:", serializedObject, "mMapStarName");
+        if (sp != null)
+        {
+            _instance.SetMapName(sp.stringValue);
+        }
+
 
         if (GUILayout.Button("RefreshMapInfo"))
         {
@@ -35,7 +44,11 @@ public class ASMakeManagerInspector : Editor
         {
             SaveMapInfo(_instance.GetASNodes());
         }
-        _instance.IsShowGizmos = EditorGUILayout.Toggle("Gizmos : ", _instance.IsShowGizmos);
+        bool value = EditorGUILayout.Toggle("Gizmos : ", _instance.IsShowGizmos);
+        if (_instance.IsShowGizmos != value)
+        {
+            _instance.SetIsShowGizmos(value);
+        }
 
 
 
@@ -50,7 +63,26 @@ public class ASMakeManagerInspector : Editor
             return;
         }
         string content = ASMapHelper.ConvertMapToTxt(array);
-        System.IO.File.WriteAllText(Application.dataPath + @"\_Res\Config\Astar.txt", content);
+        string savePath = Application.dataPath + @"\_Res\Config\";
+        if (!Directory.Exists(savePath))
+        {
+            Directory.CreateDirectory(savePath);
+        }
+        string strFileName = _instance.MapStarName;
+        string fullName = savePath + strFileName;
+
+        FileStream fileStream = new FileStream(fullName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        byte[] bytes = Encoding.Default.GetBytes(content);
+        fileStream.Write(bytes, 0, bytes.Length);
+
+        fileStream.Close();
+
+        //if (!File.Exists(fullName))
+        //{
+        //    File.CreateText(fullName);
+        //}
+        //File.WriteAllText(fullName, content);
+
         AssetDatabase.Refresh();
 
     }
@@ -63,6 +95,7 @@ public class ASMakeManagerInspector : Editor
 
         }
     }
+
 
 
 }

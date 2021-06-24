@@ -34,7 +34,11 @@ namespace MFrameWork
         {
             return Instance;
         }
-        
+        public static bool InstanceIsNull()
+        {
+            return _instance == null;
+        }
+
     }
 }
 

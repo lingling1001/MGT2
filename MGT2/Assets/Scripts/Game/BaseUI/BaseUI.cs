@@ -2,28 +2,22 @@
 
 public abstract class BaseUI
 {
-    private Transform _trans;
-    public Transform Trans { get { return _trans; } }
+    public Transform Trans { get; private set; }
     public GameObject ObjUI { get; private set; }
-    public EnumUIType UIType { get; private set; }
-    public void SetUIType(EnumUIType type)
+    public string UIPath { get; private set; }
+    public object[] UIParams { get; private set; }
+    public virtual EnumUIKind UIKind { get { return EnumUIKind.Normal; } }
+    public void SetUIType(string type)
     {
-        UIType = type;
+        UIPath = type;
     }
-    public void SetGameObject(GameObject obj)
+    public void SetGameObject(GameObject obj, params object[] param)
     {
+        Trans = obj.transform;
         ObjUI = obj;
-        _trans = obj.transform;
+        UIParams = param;
     }
     public virtual void OnInit()
-    {
-
-    }
-    public virtual void SetUIParam(params object[] param)
-    {
-
-    }
-    public virtual void On_Update(float elapseSeconds, float realElapseSeconds)
     {
 
     }
@@ -31,6 +25,19 @@ public abstract class BaseUI
     {
 
     }
+}
+
+public enum EnumUIKind
+{
+    /// <summary>
+    /// 常驻
+    /// </summary>
+    Alwary,
+    /// <summary>
+    /// 正常界面
+    /// </summary>
+    Normal,
+
 }
 
 public static class ExtensionBaseUI

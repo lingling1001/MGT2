@@ -1,5 +1,6 @@
-﻿public class ASNode 
+﻿public class ASNode
 {
+    public int index { get; private set; }
     /// <summary>
     /// x坐标
     /// </summary>
@@ -17,12 +18,11 @@
     public int G;
     public int H;
     public int F { get { return G + H; } }
-    private int index;
-    public int HeapIndex { get { return index; } set { index = value; } }
-    public ASNode(int x, int y, bool canWalk)
+    public ASNode(int x, int y, int xCount, bool canWalk)
     {
         this.x = x;
         this.y = y;
+        this.index = y * xCount + x;
         this.CanWalk = canWalk;
     }
     public int CompareTo(ASNode other)
