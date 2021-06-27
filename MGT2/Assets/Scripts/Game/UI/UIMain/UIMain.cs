@@ -26,6 +26,8 @@ public partial class UIMain : BaseUI, IUpdate
         _gameTimeManager = GameManager.Instance.GetOrAddMgr<GameTimeManager>();
 
         EventTimeState(null);
+        EventGameSpeed(null);
+
     }
 
 
@@ -57,7 +59,9 @@ public partial class UIMain : BaseUI, IUpdate
         }
 
         UIHelper.SetAtlasImage(this.m_Img_Speed, strImage);
-        UIHelper.SetText(this.m_Txt_Speed, "X" + _gameTimeManager.GameSpeed);
+        string strSpeed = UIHelper.GetStrCount(_gameTimeManager.GameSpeed, EnumCountStrType.X);
+        UIHelper.SetText(this.m_Txt_Speed, strSpeed);
+
     }
     private void EventClickPause(Button btn)
     {
@@ -72,7 +76,6 @@ public partial class UIMain : BaseUI, IUpdate
     {
         _gameTimeManager.SetSpeed();
 
-        Log.Error(_gameTimeManager.GameSpeed);
 
     }
 

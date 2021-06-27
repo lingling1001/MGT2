@@ -7,17 +7,18 @@ using UnityEngine;
 public class GameTimeManager : ManagerBase
 {
     public const int SPEED_DEFAULT = 1000;
-    public const int SPEED_MAX = 5;
-
     public int GameSpeed { get; private set; }
     public long RunTime { get; private set; }
 
     private TaskAsyncThreadFrame _threadTime;
 
+    private List<int> _listSpeed = new List<int> { 1, 2, 5, };
+
     public override void On_Init()
     {
         int taskId = TaskAsynManager.Instance.GetFreeTaskId();
         _threadTime = new TaskAsyncThreadFrame(taskId, SPEED_DEFAULT);
+        SetSpeed(1);
         TaskAsynManager.Instance.AdditionTask(_threadTime);
         _threadTime.EventExecute += EventExecute;
     }
@@ -56,32 +57,28 @@ public class GameTimeManager : ManagerBase
 
     public void SetSpeed()
     {
-        SetSpeed((GameSpeed + 1) % SPEED_MAX);
+        int index = _listSpeed.FindIndex(item => item == GameSpeed);
+        index = index < 0 ? 0 : index;
+        int nextIndex = index + 1;
+        if (nextIndex >= _listSpeed.Count)
+        {
+            nextIndex = 0;
+        }
+        SetSpeed(_listSpeed[nextIndex]);
     }
+
 
     public void SetSpeed(int value)
     {
-        int speed = CheckSpeed(value);
-        if (speed != GameSpeed)
+        if (value != GameSpeed)
         {
-            GameSpeed = speed;
-            MessageDispatcher.SendMessage(NotificationName.EventTimeState);
+            GameSpeed = value;
+            _threadTime.SetIntervalMs(SPEED_DEFAULT / GameSpeed);
+            MessageDispatcher.SendMessage(NotificationName.EventGameSpeed);
         }
-
     }
 
-    private int CheckSpeed(int speed)
-    {
-        if (speed < 1)
-        {
-            speed = 1;
-        }
-        else if (speed > SPEED_MAX)
-        {
-            speed = SPEED_MAX;
-        }
-        return speed;
-    }
+
 
     public override void On_Release()
     {

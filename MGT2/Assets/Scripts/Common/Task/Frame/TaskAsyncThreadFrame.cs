@@ -22,7 +22,7 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     public long CurFrameCount { get { return _curFrameCount; } }
 
     private long _startTime;
-    private long _tempTime;
+    private long _tempSubTime;
 
     public event System.Action<long, long> EventExecute;
     /// <summary>
@@ -85,20 +85,21 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     {
         _intervalMs = intervalMs;
     }
-
+    private long _tempNum;
     private void Execute()
     {
         while (true)
         {
             if (TaskStatus == TaskAsynStatus.Running)
             {
-                //目标时间减去当前时间
-                _tempTime = (_stopWatch.ElapsedMilliseconds - _startTime) / _intervalMs;
-                if (_curFrameCount != _tempTime)
+                //总时间 -
+                _tempSubTime = _stopWatch.ElapsedMilliseconds - _tempNum;
+
+                if (_tempSubTime > IntervalMs)
                 {
-                    _curFrameCount = _tempTime;
+                    _curFrameCount = _curFrameCount + _tempSubTime / IntervalMs;
+                    _tempNum = _stopWatch.ElapsedMilliseconds + _tempSubTime % IntervalMs;
                     OnExecute(CurFrameCount, _stopWatch.ElapsedTicks);
-                    Thread.Sleep(_intervalMs);
                 }
             }
             else if (TaskStatus == TaskAsynStatus.Run)

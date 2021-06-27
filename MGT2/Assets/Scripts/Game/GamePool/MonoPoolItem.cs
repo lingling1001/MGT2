@@ -12,10 +12,9 @@ public class MonoPoolItem : MonoBehaviour, IMonoPool
     public string PoolKey { get; set; }
     public virtual void EnterPool()
     {
-        ItemPoolMgr.Instance.AddChildToNode(PoolKey, gameObject);
+        ItemPoolMgr.AddPool(PoolKey, gameObject);
     }
-   
+
 
 }
-
 

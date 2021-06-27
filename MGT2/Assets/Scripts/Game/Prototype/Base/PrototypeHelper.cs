@@ -16,6 +16,8 @@ public class PrototypeHelper
 
         LoadData<PrototypeHeadIcon>(GetConfig("HeadIcon"));
 
+        LoadData<PrototypeText>(GetConfig("Text"));
+
 
         ////主界面
         //LoadData<PrototypeMainUI>(GetConfig("MainUI"));

@@ -6,14 +6,13 @@ public interface IWorldNodeable
     void OnInit(EnumWorldResNode type, AssemblyCache resInfo);
     void OnRelease();
     EnumWorldResNode ResNodeType { get; }
-    void OnClickMenu(EnumWorldResTP type);
+  
 }
 
 public enum EnumWorldResNode
 {
     None,
     Role,
-
 }
 public enum EnumWorldResTP
 {
@@ -25,5 +24,8 @@ public enum EnumWorldResTP
     /// 防守
     /// </summary>
     Guard = 56,
-
+    /// <summary>
+    /// 信息
+    /// </summary>
+    Infomation,
 }

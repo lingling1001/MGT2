@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-//自动生成于：6/21/2021 3:36:17 PM
+//自动生成于：6/25/2021 11:00:40 AM
 	public partial class UIWorldOperateRole
 	{
 

@@ -63,7 +63,9 @@ public partial class AssetsName
 
     public const string UIWorldOperateRole = "UI/WorldOperate/UIWorldOperateRole.prefab";
 
+    public const string UIWorldOperateItem = "UI/WorldOperate/UIWorldOperateItem.prefab";
 
+    
 
     private static Dictionary<string, string> _mapUIPaths;
     public static string GetUIPath<T>() where T : BaseUI

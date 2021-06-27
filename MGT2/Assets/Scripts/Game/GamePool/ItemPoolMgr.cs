@@ -8,6 +8,14 @@ public class ItemPoolMgr : MonoBehaviour
 {
     private Object lockedObj = new Object();
     protected static ItemPoolMgr instance;
+    public static bool InstanceIsNull()
+    {
+        if (instance == null || instance.Equals(null))
+        {
+            return true;
+        }
+        return false;
+    }
     public static ItemPoolMgr Instance
     {
         get
@@ -173,6 +181,13 @@ public class ItemPoolMgr : MonoBehaviour
         }
         return data;
     }
-
+    public static void AddPool(string strPath, GameObject obj)
+    {
+        if (ItemPoolMgr.InstanceIsNull() || obj == null)
+        {
+            return;
+        }
+        ItemPoolMgr.Instance.AddChildToNode(strPath, obj);
+    }
 }
 

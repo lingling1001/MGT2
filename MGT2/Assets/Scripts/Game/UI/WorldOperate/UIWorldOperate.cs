@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,9 +45,11 @@ public partial class UIWorldOperate : BaseUI
 
     private IWorldNodeable CreateNodeByNodeType(EnumWorldResNode type)
     {
-        if (type == EnumWorldResNode.Role)
+        switch (type)
         {
-            return ItemPoolMgr.CreateOrGetItem<UIWorldOperateRole>(AssetsName.UIWorldOperateRole, ObjUI.transform);
+            case EnumWorldResNode.Role:
+                return ItemPoolMgr.CreateOrGetItem<UIWorldOperateRole>(AssetsName.UIWorldOperateRole, ObjUI.transform);
+
         }
         return null;
     }
@@ -78,5 +81,7 @@ public partial class UIWorldOperate : BaseUI
     {
         ReleaseProcess();
     }
+
+ 
 
 }

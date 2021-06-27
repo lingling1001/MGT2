@@ -37,12 +37,21 @@ public static class UIHelper
     }
     public static void SetAtlasImage(AtlasImage image, string headIcon)
     {
+        SetAtlasImage(image, headIcon, false);
+    }
+    public static void SetAtlasImage(AtlasImage image, string headIcon, bool nativeSize)
+    {
         if (image == null || string.IsNullOrEmpty(headIcon))
         {
             return;
         }
         image.spriteName = headIcon;
+        if (nativeSize)
+        {
+            image.SetNativeSize();
+        }
     }
+
     public static Vector3 ViewportToCanvasPosition(this Canvas canvas, Vector3 viewportPosition)
     {
         var centerBasedViewPortPosition = viewportPosition - new Vector3(0.5f, 0.5f, 0);
@@ -111,33 +120,25 @@ public static class UIHelper
             texName.text = name;
         }
     }
+    private static Dictionary<EnumCountStrType, string> _mapStrCount;
 
 
     /// <summary>
     /// 拼接数量 。
     /// </summary>
-    public static string GetStrCount(string count, EnumCountStrType type = EnumCountStrType.C)
+    public static string GetStrCount(object count, EnumCountStrType type = EnumCountStrType.C)
     {
-        if (type == EnumCountStrType.X)
+        if (_mapStrCount == null)
         {
-            return " x " + count;
+            _mapStrCount = new Dictionary<EnumCountStrType, string>();
+            _mapStrCount.Add(EnumCountStrType.C, " : {0}");
+            _mapStrCount.Add(EnumCountStrType.X, " X {0}");
         }
-        else if (type == EnumCountStrType.ADD)
+        if (_mapStrCount.ContainsKey(type))
         {
-            return " + " + count;
+            return string.Format(_mapStrCount[type], count);
         }
-        else if (type == EnumCountStrType.C)
-        {
-            return " : " + count;
-        }
-        else if (type == EnumCountStrType.Asterisk)
-        {
-            return " * " + count;
-        }
-        else
-        {
-            return count;
-        }
+        return string.Empty;
     }
 
 
