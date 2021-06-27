@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root type="PrototypeAbility">
+  <Ability Id="1" Name="测试111" Icon="Archerskill_41_nobg" Describe="111" Effect="ALimitCD:1000|ALimitCost:2,10|AAnimation:att01|ADelay:1000,AModifier:1,20" />
+</Root>

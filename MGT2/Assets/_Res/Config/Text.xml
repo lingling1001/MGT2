@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root type="PrototypeText">
+  <Text Id="1" Chinese="攻击" />
+  <Text Id="2" Chinese="防守" />
+  <Text Id="3" Chinese="信息" />
+</Root>

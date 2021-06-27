@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root type="PrototypeRole">
+  <Role Id="1" Name="弓手" ModelType="0" Quality="1" Path="Model/TempMod.prefab" Scale="1,1,1" />
+  <Role Id="2" Name="赤蝎" ModelType="0" Quality="2" Path="monster_chixie" Scale="1,1,1" />
+  <Role Id="3" Name="黄蝎" ModelType="0" Quality="3" Path="monster_huangxie" Scale="1,1,1" />
+  <Role Id="4" Name="紫蝎" ModelType="0" Quality="4" Path="monster_zixie" Scale="1,1,1" />
+  <Role Id="5" Name="树精" ModelType="0" Quality="5" Path="monster_fushideshujing" Scale="0.8,0.8,0.8" />
+  <Role Id="6" Name="强盗" ModelType="0" Quality="5" Path="monster_heimotuanqiangdao" Scale="0.8,0.8,0.8" />
+  <Role Id="7" Name="守卫" ModelType="0" Quality="5" Path="monster_guiyuanshouwei" Scale="0.5,0.5,0.5" />
+  <Role Id="8" Name="树精" ModelType="0" Quality="5" Path="monster_daocaojing" Scale="0.8,0.8,0.8" />
+</Root>

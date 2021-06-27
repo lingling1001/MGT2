@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root type="PrototypeHeadIcon">
+  <HeadIcon Id="1" Type="1" Name="00000a52.0000h.0005h39" />
+  <HeadIcon Id="2" Type="1" Name="00000b33.0000h.0005h41" />
+  <HeadIcon Id="3" Type="1" Name="00000c4b.0000h.0005h43" />
+  <HeadIcon Id="4" Type="1" Name="000000d6.0000h.0005h3" />
+  <HeadIcon Id="5" Type="1" Name="00000d69.0000h.0005h46" />
+  <HeadIcon Id="6" Type="1" Name="00000da0.0000h.0005h48" />
+  <HeadIcon Id="7" Type="1" Name="00000e00.0000h.0005h50" />
+  <HeadIcon Id="8" Type="1" Name="00000e99.0000h.0005h52" />
+  <HeadIcon Id="9" Type="2" Name="00000b33.0000h.0005h1" />
+  <HeadIcon Id="10" Type="2" Name="00000c5e.0000h.0005h44" />
+  <HeadIcon Id="11" Type="2" Name="00000cbc.0000h.0005h45" />
+  <HeadIcon Id="12" Type="2" Name="00000d89.0000h.0005h47" />
+  <HeadIcon Id="13" Type="2" Name="000000e2.0000h.0005h4" />
+  <HeadIcon Id="14" Type="2" Name="00000e49.0000h.0005h51" />
+</Root>

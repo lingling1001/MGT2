@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root type="PrototypeAttribute">
+  <Attribute Id="1" Name="血量" SimpleName="" />
+  <Attribute Id="2" Name="魔法" SimpleName="" />
+  <Attribute Id="3" Name="最小攻击" SimpleName="" />
+  <Attribute Id="4" Name="最大攻击" SimpleName="" />
+  <Attribute Id="5" Name="最小防御" SimpleName="" />
+  <Attribute Id="6" Name="最大防御" SimpleName="" />
+  <Attribute Id="7" Name="移动速度" SimpleName="" />
+  <Attribute Id="8" Name="攻击速度" SimpleName="" />
+  <Attribute Id="9" Name="攻击范围" SimpleName="" />
+  <Attribute Id="10" Name="警戒范围" SimpleName="" />
+  <Attribute Id="11" Name="攻击频率" SimpleName="" />
+</Root>
