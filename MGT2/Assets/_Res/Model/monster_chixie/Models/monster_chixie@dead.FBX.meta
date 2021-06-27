@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: 9908120595804d441a16fbc6908147f6
+timeCreated: 1516155951
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bone00
+    100002: Bone01
+    100004: Bone02
+    100006: Bone03
+    100008: Bone04
+    100010: Bone05
+    100012: Bone06
+    100014: Bone07
+    100016: Bone08
+    100018: Bone09
+    100020: Bone10
+    100022: Bone11
+    100024: Bone13
+    100026: Bone14
+    100028: Bone16
+    100030: Bone17
+    100032: Bone19
+    100034: Bone20
+    100036: Bone22
+    100038: Bone23
+    100040: Bone25
+    100042: Bone26
+    100044: Dummy001
+    100046: Dummy002
+    100048: IK Chain001
+    100050: IK Chain002
+    100052: IK Chain003
+    100054: IK Chain004
+    100056: IK Chain005
+    100058: IK Chain006
+    100060: monster_chixie
+    100062: //RootNode
+    400000: Bone00
+    400002: Bone01
+    400004: Bone02
+    400006: Bone03
+    400008: Bone04
+    400010: Bone05
+    400012: Bone06
+    400014: Bone07
+    400016: Bone08
+    400018: Bone09
+    400020: Bone10
+    400022: Bone11
+    400024: Bone13
+    400026: Bone14
+    400028: Bone16
+    400030: Bone17
+    400032: Bone19
+    400034: Bone20
+    400036: Bone22
+    400038: Bone23
+    400040: Bone25
+    400042: Bone26
+    400044: Dummy001
+    400046: Dummy002
+    400048: IK Chain001
+    400050: IK Chain002
+    400052: IK Chain003
+    400054: IK Chain004
+    400056: IK Chain005
+    400058: IK Chain006
+    400060: monster_chixie
+    400062: //RootNode
+    4300000: monster_chixie
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: monster_chixie
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 2
+    addColliders: 0
+    importBlendShapes: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 534a6c118dbf584409e189fe083c8802,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
