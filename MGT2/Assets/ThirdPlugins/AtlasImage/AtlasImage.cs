@@ -14,6 +14,10 @@ public class AtlasImage : Image
     [SerializeField] private SpriteAtlas m_SpriteAtlas;
     private string _lastSpriteName = "";
 
+    protected AtlasImage()
+       : base()
+    {
+    }
 
     /// <summary>Sprite Name. If there is no other sprite with the same name in the atlas, AtlasImage will display the default sprite.</summary>
     public string spriteName
@@ -67,33 +71,49 @@ public class AtlasImage : Image
     private void RefreshSprite()
     {
 #if UNITY_EDITOR
-        if (string.IsNullOrEmpty(spriteName))
+        sprite = LoadEditorSprite(spriteAtlas, spriteName);
+#else
+        sprite = spriteAtlas ? spriteAtlas.GetSprite(spriteName) : null;
+#endif
+    }
+
+#if UNITY_EDITOR
+    public static Sprite LoadEditorSprite(SpriteAtlas atlas, string sprName)
+    {
+        if (string.IsNullOrEmpty(sprName) || atlas == null)
         {
-            return;
+            return null;
         }
-        Sprite spr = spriteAtlas.GetSprite(spriteName);
-        Object[] objs = UnityEditor.U2D.SpriteAtlasExtensions.GetPackables(spriteAtlas);
+        Sprite neSp = atlas.GetSprite(sprName);
+        if (Application.isPlaying)
+        {
+            return neSp;
+        }
+        Object[] objs = UnityEditor.U2D.SpriteAtlasExtensions.GetPackables(atlas);
         for (int cnt = 0; cnt < objs.Length; cnt++)
         {
             UnityEditor.DefaultAsset asset = objs[cnt] as UnityEditor.DefaultAsset;
             if (asset != null)
             {
                 string path = UnityEditor.AssetDatabase.GetAssetPath(objs[cnt]);
-                string realPath = string.Format("{0}/{1}.png", path, spriteName);
-                sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(realPath);
-
+                string[] strs = UnityEditor.AssetDatabase.FindAssets(sprName, new string[] { path });
+                for (int i = 0; i < strs.Length; i++)
+                {
+                    string chPath = UnityEditor.AssetDatabase.GUIDToAssetPath(strs[i]);
+                    Object[] chObjs = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(chPath);
+                    for (int ch = 0; ch < chObjs.Length; ch++)
+                    {
+                        if (chObjs[ch].name == sprName)
+                        {
+                            return chObjs[ch] as Sprite;
+                        }
+                    }
+                }
             }
         }
-#else
-        sprite = spriteAtlas ? spriteAtlas.GetSprite(spriteName) : null;
+        return null;
+    }
 #endif
-    }
-
-
-    protected AtlasImage()
-        : base()
-    {
-    }
 
     /// <summary>
     /// Raises the populate mesh event.
