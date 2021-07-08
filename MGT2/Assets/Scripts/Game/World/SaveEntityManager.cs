@@ -24,7 +24,7 @@ public class SaveEntityManager : ManagerBase
     public void SaveAllEntity()
     {
         List<EntityAssembly> list = new List<EntityAssembly>();
-        Dictionary<int, EntityAssembly> map = GameManager.QGetOrAddMgr<EntityManager>().GetAllDatas();
+        Dictionary<int, EntityAssembly> map = GameManager<EntityManager>.QGetOrAddMgr().GetAllDatas();
         foreach (var item in map)
         {
             list.Add(item.Value);
@@ -90,7 +90,7 @@ public class SaveEntityManager : ManagerBase
                 EntityAssembly entity = ConvertToEntity(strValue);
                 if (entity != null)
                 {
-                    GameManager.QGetOrAddMgr<EntityManager>().AdditionKey(entity);
+                    GameManager<EntityManager>.QGetOrAddMgr().AdditionKey(entity);
                 }
                 Log.Info(strValue);
                 index++;

@@ -7,12 +7,11 @@ public class AssemblyCache : AssemblyBase
     private AssemblyAttribute assyAttribute;
     private AssemblyView assemblyView;
     private AssemblyCameraFollow assyCameraFollow;
-
     private AssemblyRoleInfo assyRoleInfo;
-
     private AssemblyRoleControl assyRoleControl;
-
     private AssemblyRoleAction assyRoleAction;
+
+
 
     [Newtonsoft.Json.JsonIgnore]
     public AssemblyRoleInfo AssyRoleInfo
@@ -52,13 +51,13 @@ public class AssemblyCache : AssemblyBase
             return assyRoleAction;
         }
     }
-    //private AssemblyDirection assyDirection;
-    //private AssemblyGoapAgent assyGoapAgent;
-    //private AssemblyAnimator assyAnimator;
-    //private AssemblyEyeSensor assyEyeSensor;
+    private AssemblyDirection assyDirection;
+    private AssemblyGoapAgent assyGoapAgent;
+    private AssemblyAnimator assyAnimator;
+    private AssemblyEyeSensor assyEyeSensor;
     //private AssemblyCamp assyCamp;
     //private AssemblyPrototypeRole assyPrototypeRole;
-    //private AssemblyAutoMove assemblyAutoMove;
+    private AssemblyAutoMove assemblyAutoMove;
     //private AssemblyCastle assemblyCastle;
     //private AssemblyUnitCastle assemblyUnitCastle;
     //private AssemblyJoystick assemblyJoystick;
@@ -118,17 +117,17 @@ public class AssemblyCache : AssemblyBase
     /// <summary>
     /// 移动组件
     /// </summary>
-    //public AssemblyAutoMove AssemblyAutoMove
-    //{
-    //    get
-    //    {
-    //        if (assemblyAutoMove == null)
-    //        {
-    //            assemblyAutoMove = Owner.GetData<AssemblyAutoMove>();
-    //        }
-    //        return assemblyAutoMove;
-    //    }
-    //}
+    public AssemblyAutoMove AssemblyAutoMove
+    {
+        get
+        {
+            if (assemblyAutoMove == null)
+            {
+                assemblyAutoMove = Owner.GetData<AssemblyAutoMove>();
+            }
+            return assemblyAutoMove;
+        }
+    }
     /// <summary>
     /// 城堡单位组件
     /// </summary>
@@ -157,7 +156,18 @@ public class AssemblyCache : AssemblyBase
     //        return assemblyCastle;
     //    }
     //}
-
+    [Newtonsoft.Json.JsonIgnore]
+    public Vector3 Position
+    {
+        get
+        {
+            if (AssyPosition != null)
+            {
+                return AssyPosition.Position;
+            }
+            return Vector3.zero;
+        }
+    }
 
     /// <summary>
     /// 位置。 常用组件 缓存
@@ -179,17 +189,17 @@ public class AssemblyCache : AssemblyBase
     /// <summary>
     /// 朝向
     /// </summary>
-    //public AssemblyDirection AssyDirection
-    //{
-    //    get
-    //    {
-    //        if (assyDirection == null)
-    //        {
-    //            assyDirection = Owner.GetData<AssemblyDirection>();
-    //        }
-    //        return assyDirection;
-    //    }
-    //}
+    public AssemblyDirection AssyDirection
+    {
+        get
+        {
+            if (assyDirection == null)
+            {
+                assyDirection = Owner.GetData<AssemblyDirection>();
+            }
+            return assyDirection;
+        }
+    }
 
 
 
@@ -226,51 +236,51 @@ public class AssemblyCache : AssemblyBase
         }
     }
 
-    ///// <summary>
-    ///// AI
-    ///// </summary>
-    //public AssemblyGoapAgent AssyGoapAgent
-    //{
-    //    get
-    //    {
-    //        if (assyGoapAgent == null)
-    //        {
-    //            assyGoapAgent = Owner.GetData<AssemblyGoapAgent>();
-    //        }
-    //        return assyGoapAgent;
-    //    }
-    //}
+    /// <summary>
+    /// AI
+    /// </summary>
+    public AssemblyGoapAgent AssyGoapAgent
+    {
+        get
+        {
+            if (assyGoapAgent == null)
+            {
+                assyGoapAgent = Owner.GetData<AssemblyGoapAgent>();
+            }
+            return assyGoapAgent;
+        }
+    }
 
-    ///// <summary>
-    ///// 动画组件
-    ///// </summary>
-    //public AssemblyAnimator AssyAnimator
-    //{
-    //    get
-    //    {
-    //        if (assyAnimator == null)
-    //        {
-    //            assyAnimator = Owner.GetData<AssemblyAnimator>();
-    //        }
-    //        return assyAnimator;
-    //    }
-    //}
+    /// <summary>
+    /// 动画组件
+    /// </summary>
+    public AssemblyAnimator AssyAnimator
+    {
+        get
+        {
+            if (assyAnimator == null)
+            {
+                assyAnimator = Owner.GetData<AssemblyAnimator>();
+            }
+            return assyAnimator;
+        }
+    }
 
 
-    ///// <summary>
-    ///// AI寻找敌人组件
-    ///// </summary>
-    //public AssemblyEyeSensor AssyEyeSensor
-    //{
-    //    get
-    //    {
-    //        if (assyEyeSensor == null && Owner.ContainsKey(typeof(AssemblyEyeSensor)))
-    //        {
-    //            assyEyeSensor = Owner.GetData<AssemblyEyeSensor>();
-    //        }
-    //        return assyEyeSensor;
-    //    }
-    //}
+    /// <summary>
+    /// AI寻找敌人组件
+    /// </summary>
+    public AssemblyEyeSensor AssyEyeSensor
+    {
+        get
+        {
+            if (assyEyeSensor == null && Owner.ContainsKey(typeof(AssemblyEyeSensor)))
+            {
+                assyEyeSensor = Owner.GetData<AssemblyEyeSensor>();
+            }
+            return assyEyeSensor;
+        }
+    }
 
 
 
@@ -327,11 +337,10 @@ public class AssemblyCache : AssemblyBase
         assyPosition = null;
         assyAttribute = null;
         assyRoleControl = null;
-        //assyDirection = null;
-        //assyEyeSensor = null;
-        //assyAnimator = null;
-        //assyCamp = null;
-        //assyGoapAgent = null;
+        assyDirection = null;
+        assyEyeSensor = null;
+        assyAnimator = null;
+        assyGoapAgent = null;
         base.OnRelease();
     }
 

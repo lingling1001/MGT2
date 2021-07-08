@@ -19,7 +19,7 @@ public partial class UIEnterGame : BaseUI
     }
     private void RefreshContent()
     {
-        _saveEntityManager = GameManager.QGetOrAddMgr<SaveEntityManager>();
+        _saveEntityManager = GameManager<SaveEntityManager>.QGetOrAddMgr();
         m_Btn_Load.interactable = _saveEntityManager.HasSaveGame();
 
     }
@@ -28,13 +28,13 @@ public partial class UIEnterGame : BaseUI
     /// </summary>
     private void EventClickEnter(Button btn)
     {
-        GameManager.QGetOrAddMgr<WorldManager>().SetEnterType(EnumEnterType.NewGame);
+        GameManager<WorldManager>.QGetOrAddMgr().SetEnterType(EnumEnterType.NewGame);
         GameStateManager.Instance.ChangeState(FsmManagerGame.GAME_STATE_START);
     }
 
     private void EventClickLoad(Button btn)
     {
-        GameManager.QGetOrAddMgr<WorldManager>().SetEnterType(EnumEnterType.Load);
+        GameManager<WorldManager>.QGetOrAddMgr().SetEnterType(EnumEnterType.Load);
         GameStateManager.Instance.ChangeState(FsmManagerGame.GAME_STATE_START);
     }
 

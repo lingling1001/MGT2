@@ -8,13 +8,14 @@ public class EntityFactory
     /// <returns></returns>
     public static EntityAssembly CreateEntityToMap(int type = 0)
     {
-        int key = GameManager.Instance.GetOrAddMgr<EntityManager>().GetFreeEntityKey();
+        EntityManager entityMgr = GameManager<EntityManager>.QGetOrAddMgr();
+        int key = entityMgr.GetFreeEntityKey();
         EntityAssembly entity = CreateEntity(key, type);
-        GameManager.Instance.GetOrAddMgr<EntityManager>().Addition(entity);
+        entityMgr.Addition(entity);
         return entity;
     }
 
-   
+
 
     /// <summary>
     /// 创建组件并添加到entity

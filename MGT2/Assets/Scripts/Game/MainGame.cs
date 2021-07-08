@@ -15,14 +15,11 @@ public class MainGame : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this);
         }
-
     }
 
     private void Start()
     {
-
         GameStateManager.Instance.OnInit();
-
     }
     private void Update()
     {

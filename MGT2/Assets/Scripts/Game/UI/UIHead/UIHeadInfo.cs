@@ -24,7 +24,7 @@ public partial class UIHeadInfo : BaseUI, IUpdate
     }
     private void RefreshAllEntity()
     {
-        Dictionary<int, EntityAssembly> map = GameManager.QGetOrAddMgr<EntityManager>().GetAllDatas();
+        Dictionary<int, EntityAssembly> map = GameManager<EntityManager>.QGetOrAddMgr().GetAllDatas();
 
         Dictionary<int, EntityAssembly> targets = new Dictionary<int, EntityAssembly>();
         foreach (var item in map)

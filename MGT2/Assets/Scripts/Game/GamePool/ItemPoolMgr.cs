@@ -40,7 +40,7 @@ public class ItemPoolMgr : MonoBehaviour
     /// <summary>
     /// 从对象池获取一个对象 没有返回空 需要自己处理并创建新的
     /// </summary>
-    public T GetIPooltem<T>(string strKey) where T : class, IMonoPool
+    private T GetIPooltem<T>(string strKey) where T : class, IMonoPool
     {
         IMonoPool data = GetIPooltem(strKey);
         if (data != null)
@@ -52,7 +52,7 @@ public class ItemPoolMgr : MonoBehaviour
     /// <summary>
     /// 从对象池获取一个对象 没有返回空 需要自己处理并创建新的
     /// </summary>
-    public IMonoPool GetIPooltem(string strKey)
+    private IMonoPool GetIPooltem(string strKey)
     {
         lock (lockedObj)
         {
@@ -72,7 +72,7 @@ public class ItemPoolMgr : MonoBehaviour
     /// 添加对象缓存
     /// </summary>
     /// <param name="item"></param>
-    public void AddPoolItem(IMonoPool item)
+    private void AddPoolItem(IMonoPool item)
     {
         if (item == null)
         {
@@ -86,7 +86,7 @@ public class ItemPoolMgr : MonoBehaviour
     /// <summary>
     /// 取出缓存列表
     /// </summary>
-    public List<IMonoPool> GetOrNewList(string strPath)
+    private List<IMonoPool> GetOrNewList(string strPath)
     {
         if (!_mapCache.ContainsKey(strPath))
         {
@@ -98,7 +98,7 @@ public class ItemPoolMgr : MonoBehaviour
     /// <summary>
     /// 添加物体到节点下
     /// </summary>
-    public void AddChildToNode(string strKey, GameObject child)
+    private void AddChildToNode(string strKey, GameObject child)
     {
         if (!_mapParents.ContainsKey(strKey))
         {
@@ -189,5 +189,15 @@ public class ItemPoolMgr : MonoBehaviour
         }
         ItemPoolMgr.Instance.AddChildToNode(strPath, obj);
     }
+    public static void AddPool(IMonoPool mono)
+    {
+        if (ItemPoolMgr.InstanceIsNull() || mono == null || mono.Equals(null))
+        {
+            return;
+        }
+        ItemPoolMgr.Instance.AddPoolItem(mono);
+    }
+
+
 }
 

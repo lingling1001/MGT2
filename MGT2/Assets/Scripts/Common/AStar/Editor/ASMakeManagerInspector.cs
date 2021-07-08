@@ -35,7 +35,6 @@ public class ASMakeManagerInspector : Editor
             _instance.SetMapName(sp.stringValue);
         }
 
-
         if (GUILayout.Button("RefreshMapInfo"))
         {
             _instance.RefreshMap();
@@ -77,12 +76,7 @@ public class ASMakeManagerInspector : Editor
 
         fileStream.Close();
 
-        //if (!File.Exists(fullName))
-        //{
-        //    File.CreateText(fullName);
-        //}
-        //File.WriteAllText(fullName, content);
-
+       
         AssetDatabase.Refresh();
 
     }

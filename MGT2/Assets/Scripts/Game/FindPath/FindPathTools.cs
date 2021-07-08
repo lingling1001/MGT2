@@ -22,7 +22,7 @@ public class FindPathTools
         {
             return;
         }
-       
+
         InitialMapInfo(txt.text, size.x, size.y, gridSize);
     }
 
@@ -38,7 +38,7 @@ public class FindPathTools
             _astartThread = new TaskAsyncThreadFrame(taskId, 10);
             _astartThread.EventExecute += OnExecute;
             TaskAsynManager.Instance.AdditionTask(_astartThread);
-
+            TaskAsynManager.Instance.FinishTask(taskId);
         }
         _mapInfo = new ASMap();
         ASNode[,] nodes = ASMapHelper.ConvertTxtToMap(txt, sizeX, sizeY);
@@ -57,7 +57,7 @@ public class FindPathTools
 
     private ASMapFindPathData AddFindPath(ASNode start, ASNode end)
     {
-        ASMapFindPathData data = GameManager.QGetOrAddMgr<MapManager>().FindPath.CreateData(start, end);
+        ASMapFindPathData data = GameManager<MapManager>.QGetOrAddMgr().FindPath.CreateData(start, end);
         _listTask.Add(data);
         return data;
     }
@@ -134,7 +134,7 @@ public class FindPathTools
             data.ListNode.AddRange(_mapInfo.FindPathRes);
             data.SetState(1);
             _listTask.Remove(data);
-            ItemPoolMgr.Instance.AddPoolItem(data);
+            ItemPoolMgr.AddPool(data);
         }
 
     }

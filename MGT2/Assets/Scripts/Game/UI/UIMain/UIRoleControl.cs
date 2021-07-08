@@ -11,7 +11,7 @@ public partial class UIRoleControl : BaseUI
     public override void OnInit()
     {
         MessageDispatcher.AddListener(NotificationName.EventEntityInitial, EventEntityInitial);
-        _entityMgr = GameManager.QGetOrAddMgr<EntityManager>();
+        _entityMgr = GameManager<EntityManager>.QGetOrAddMgr();
         GetBindComponents(ObjUI);
         RefreshContent();
     }

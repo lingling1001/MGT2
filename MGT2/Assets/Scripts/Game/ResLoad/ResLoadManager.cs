@@ -79,7 +79,7 @@ public class ResLoadManager : MonoSingleton<ResLoadManager>, IUpdate
             {
                 data.Finish(EnumLoadState.Finish);
                 _listLoadingCur.Remove(data);
-                ItemPoolMgr.Instance.AddPoolItem(data);//加入缓存
+                ItemPoolMgr.AddPool(data);//加入缓存
             }
         }
     }

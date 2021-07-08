@@ -13,6 +13,6 @@ public class AssemblyHeadUI : AssemblyBase
     protected override void OnRelease()
     {
         MessageDispatcher.SendMessage(NotificationName.EventEntityHeadRem, Owner);
-        base.OnRelease();
+
     }
 }

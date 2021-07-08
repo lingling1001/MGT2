@@ -27,12 +27,12 @@ public class EditorPlayMode
 
     private static void OnUnityPauseStateChange(PauseState obj)
     {
-        if (GameManager.InstanceIsNull())
+        if (GameManager<GameTimeManager>.InstanceIsNull())
         {
             return;
         }
 
-        GameTimeManager timeMgr = GameManager.Instance.GetMgr<GameTimeManager>();
+        GameTimeManager timeMgr = GameManager<GameTimeManager>.QGetOrAddMgr();
         if (timeMgr == null)
         {
             return;

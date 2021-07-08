@@ -23,7 +23,7 @@ public partial class UIMain : BaseUI, IUpdate
         EventHelper.RegistEvent(m_Btn_Pause, EventClickPause);
         EventHelper.RegistEvent(m_Btn_Speed, EventClickSpeed);
 
-        _gameTimeManager = GameManager.Instance.GetOrAddMgr<GameTimeManager>();
+        _gameTimeManager = GameManager<GameTimeManager>.QGetOrAddMgr();
 
         EventTimeState(null);
         EventGameSpeed(null);
@@ -87,7 +87,7 @@ public partial class UIMain : BaseUI, IUpdate
     }
     private void EventClickMain(Button btn)
     {
-        GameManager.QGetOrAddMgr<SaveEntityManager>().SaveAllEntity();
+        GameManager<SaveEntityManager>.QGetOrAddMgr().SaveAllEntity();
         GameStateManager.Instance.ChangeState(FsmManagerGame.GAME_STATE_MAIN);
     }
 

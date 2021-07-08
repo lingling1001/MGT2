@@ -16,7 +16,7 @@ public partial class UIJoystick : BaseUI
         EasyTouch.On_Swipe += EventOnSwipe;
 
         _ectJoystick = ObjUI.GetComponentInChildren<ETCJoystick>();
-        _cameraManager = GameManager.QGetOrAddMgr<CameraManager>();
+        _cameraManager = GameManager<CameraManager>.QGetOrAddMgr();
 
         GetBindComponents(ObjUI);
         RefreshContent();

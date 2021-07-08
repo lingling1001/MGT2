@@ -49,9 +49,16 @@ public class ASMakeManager : MonoSingleton<ASMakeManager>
         RefreshView();
 
     }
-
+    public bool IsNull()
+    {
+        return _mapInfo == null;
+    }
     public ASNode[,] GetASNodes()
     {
+        if (_mapInfo == null)
+        {
+            return null;
+        }
         return _mapInfo.GetASNodes();
     }
 

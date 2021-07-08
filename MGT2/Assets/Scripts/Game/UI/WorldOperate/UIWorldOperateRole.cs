@@ -43,7 +43,7 @@ public partial class UIWorldOperateRole : MonoPoolItem, IWorldNodeable
     private void EventClickMenu(UIWorldOperateItem obj)
     {
 
-        Log.Error(obj.OperateType);
+       
 
     }
 
@@ -51,7 +51,7 @@ public partial class UIWorldOperateRole : MonoPoolItem, IWorldNodeable
     {
         for (int cnt = 0; cnt < _listMenuItems.Count; cnt++)
         {
-            ItemPoolMgr.Instance.AddPoolItem(_listMenuItems[cnt]);
+            ItemPoolMgr.AddPool(_listMenuItems[cnt]);
         }
         _listMenuItems.Clear();
     }

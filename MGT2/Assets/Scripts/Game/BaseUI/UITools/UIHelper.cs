@@ -80,7 +80,7 @@ public static class UIHelper
 
     public static Vector2 WorldToUIPoint(Vector3 worldPos)
     {
-        return WorldToUIPoint(GameManager.QGetOrAddMgr<CameraManager>().MainCamera, worldPos);
+        return WorldToUIPoint(GameManager<CameraManager>.QGetOrAddMgr().MainCamera, worldPos);
     }
     public static Vector2 WorldToUIPoint(Camera camera, Vector3 worldPos)
     {

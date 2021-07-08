@@ -71,7 +71,7 @@ public partial class UIWorldOperate : BaseUI
             MonoPoolItem item = _worldResMenuProcess as MonoPoolItem;
             if (item != null)
             {
-                ItemPoolMgr.Instance.AddPoolItem(item);
+                ItemPoolMgr.AddPool(item);
             }
         }
         _worldResMenuProcess = null;
@@ -82,6 +82,6 @@ public partial class UIWorldOperate : BaseUI
         ReleaseProcess();
     }
 
- 
+
 
 }

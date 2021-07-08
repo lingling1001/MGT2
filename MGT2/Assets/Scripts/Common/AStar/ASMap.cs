@@ -225,6 +225,7 @@ public class ASMap
     {
         return GetNode(xy[0], xy[1]);
     }
+
     public ASNode GetNode(int x, int y)
     {
         if (x > -1 && x < _map.GetLength(0) && y > -1 && y < _map.GetLength(1))

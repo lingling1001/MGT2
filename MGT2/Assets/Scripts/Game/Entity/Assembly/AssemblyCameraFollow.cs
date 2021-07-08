@@ -7,7 +7,8 @@
         {
             return;
         }
-        GameManager.QGetOrAddMgr<CameraManager>().SetFollowTarget(GetView().Trans);
+        
+        GameManager<CameraManager>.QGetOrAddMgr().SetFollowTarget(GetView().Trans);
     }
 
 }

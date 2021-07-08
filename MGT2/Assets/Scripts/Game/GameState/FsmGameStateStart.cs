@@ -12,11 +12,11 @@ public class FsmGameStateStart : FsmBase
     {
         base.OnEnter();
 
-        GameManager.QGetOrAddMgr<GameTimeManager>();
-        GameManager.QGetOrAddMgr<CameraManager>();
-        GameManager.QGetOrAddMgr<EntityManager>();
-        GameManager.QGetOrAddMgr<WorldManager>();
-        GameManager.QGetOrAddMgr<MapManager>().SetMapData(1);
+        GameManager<GameTimeManager>.QGetOrAddMgr();
+        GameManager<CameraManager>.QGetOrAddMgr();
+        GameManager<EntityManager>.QGetOrAddMgr();
+        GameManager<WorldManager>.QGetOrAddMgr();
+        GameManager<MapManager>.QGetOrAddMgr().SetMapData(1);
 
         UIManager.QOpenUI<UIHeadInfo>();
         UIManager.QOpenUI<UIMain>();
@@ -27,11 +27,11 @@ public class FsmGameStateStart : FsmBase
     }
     public override void OnLeave()
     {
-        GameManager.QRemoveMgr<GameTimeManager>();
-        GameManager.QRemoveMgr<MapManager>();
-        GameManager.QRemoveMgr<CameraManager>();
-        GameManager.QRemoveMgr<EntityManager>();
-        GameManager.QRemoveMgr<WorldManager>();
+        GameManager<GameTimeManager>.QRemoveMgr();
+        GameManager<MapManager>.QRemoveMgr();
+        GameManager<CameraManager>.QRemoveMgr();
+        GameManager<EntityManager>.QRemoveMgr();
+        GameManager<WorldManager>.QRemoveMgr();
 
         UIManager.Instance.CloseAllUI(EnumUIKind.Normal);
 

@@ -21,7 +21,6 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     private long _curFrameCount;
     public long CurFrameCount { get { return _curFrameCount; } }
 
-    private long _startTime;
     private long _tempSubTime;
 
     public event System.Action<long, long> EventExecute;
@@ -32,6 +31,7 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
     /// <param name="intervalMs">间隔毫秒</param>
     public TaskAsyncThreadFrame(int taskId, int intervalMs)
     {
+
         TaskId = taskId;
         _thread = new Thread(Execute);
         SetRunStatus(TaskAsynStatus.None);
@@ -46,7 +46,6 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
             SetRunStatus(TaskAsynStatus.Run);
             _curFrameCount = 0;
             _stopWatch.Restart();
-            _startTime = _stopWatch.ElapsedMilliseconds;
             _thread.Start();
             return true;
         }
@@ -92,13 +91,14 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
         {
             if (TaskStatus == TaskAsynStatus.Running)
             {
-                //总时间 -
+                Thread.Sleep(IntervalMs / 4);
+                //当前时间 减去 上次的时间
                 _tempSubTime = _stopWatch.ElapsedMilliseconds - _tempNum;
-
                 if (_tempSubTime > IntervalMs)
                 {
                     _curFrameCount = _curFrameCount + _tempSubTime / IntervalMs;
-                    _tempNum = _stopWatch.ElapsedMilliseconds + _tempSubTime % IntervalMs;
+                    //时间差= 当前时间-本次多余出的时间
+                    _tempNum = _stopWatch.ElapsedMilliseconds - _tempSubTime % IntervalMs;
                     OnExecute(CurFrameCount, _stopWatch.ElapsedTicks);
                 }
             }
@@ -124,6 +124,7 @@ public class TaskAsyncThreadFrame : ITaskAsyncable
             }
         }
         _thread.Abort();
+
     }
 
     private void OnExecute(long frameCount, long ticks)
